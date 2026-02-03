@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-// import "@rainbow-me/rainbowkit/styles.css";
+import "@rainbow-me/rainbowkit/styles.css";
 import { ClientProviders } from "@/app/ClientProviders";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";

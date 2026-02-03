@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-  ],
+, "src/lib/NftUris.tsx", "src/lib2/backgrounds.ts"  ],
   "exclude": ["node_modules"]
 }
