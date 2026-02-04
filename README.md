@@ -1,24 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RetroPunks NFT Website
+
+An NFT customization website for the RetroPunks collection. View and customize your on-chain punks with background cycling, downloads, and metadata editing.
+
+## Tech Stack
+
+- **Next.js 16** · **React 19** · **TypeScript**
+- **Wagmi** · **Viem** · **RainbowKit**
+- **Tailwind CSS 4** · **Sonner** (toasts)
 
 ## Getting Started
 
-First, run the development server:
+### 1. Install dependencies
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Environment variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create a `.env` file with:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+NEXT_PUBLIC_CONTRACT_ADDRESS=<your-contract-address>
+NEXT_PUBLIC_RPC_URL=<alchemy-or-infura-url>
+NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=<walletconnect-project-id>
+```
+
+### 3. Run the development server
+
+```bash
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Toasts (Sonner)
+
+The project uses [Sonner](https://sonner.emilkowal.ski/) for toast notifications. It's already wired in `src/app/providers.tsx`. Use it anywhere:
+
+```tsx
+import { toast } from "sonner";
+
+toast.success("Background set on-chain");
+toast.error("Download failed");
+```
 
 ## Learn More
 

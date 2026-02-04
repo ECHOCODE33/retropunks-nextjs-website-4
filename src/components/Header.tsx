@@ -152,7 +152,7 @@ export default function Header() {
 						<div className="absolute left-0 z-40 w-full h-4 top-full" />
 
 						<div id="socials-menu" role="menu" aria-hidden={!socialsOpen} className={socialsMenuClass}>
-							<div className="bg-[#0a0a0a]/95 backdrop-blur-xl border border-white/10 p-1.5 rounded-sm shadow-xl min-w-50">
+							<div className="bg-retro-dark/95 backdrop-blur-xl border border-white/10 p-1.5 rounded-sm shadow-xl min-w-50">
 								{SOCIAL_LINKS.map((link) => (
 									<a key={link.name} href={link.href} target="_blank" rel="noopener noreferrer" onClick={handleLinkClick} className={dropdownAnchorClass}>
 										<div className={contentWrapperClass}>
