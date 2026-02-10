@@ -1,13 +1,13 @@
-import { getDefaultConfig } from '@rainbow-me/rainbowkit';
-import { sepolia } from 'wagmi/chains';
+import { getDefaultConfig } from "@rainbow-me/rainbowkit";
+import { base } from "wagmi/chains";
 
 const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID;
 
-if (!projectId) throw new Error('Missing WalletConnect Project ID')
+if (!projectId) throw new Error("Missing WalletConnect Project ID");
 
 export const config = getDefaultConfig({
-  appName: 'RetroPunks',
+  appName: "RetroPunks",
   projectId,
-  chains: [sepolia],
+  chains: [base],
   ssr: true,
 });

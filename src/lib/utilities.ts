@@ -1,5 +1,7 @@
 // lib/utilities.ts
 
+import { bytesToHex, hexToBytes } from "viem";
+
 declare const DOMParser: {
   new (): { parseFromString(str: string, type: string): Document };
 };
@@ -8,15 +10,48 @@ declare const XMLSerializer: {
 };
 
 /**
+ * Encode a string to bytes32 hex (left-padded, max 32 bytes UTF-8).
+ * Used for RetroPunks setTokenMetadata name field.
+ */
+export function stringToBytes32(s: string): `0x${string}` {
+  const bytes = new TextEncoder().encode(s.slice(0, 32));
+  const padded = new Uint8Array(32);
+  padded.set(bytes);
+  return bytesToHex(padded) as `0x${string}`;
+}
+
+/**
+ * Decode bytes32 hex from contract (e.g. globalTokenMetadata name) to string.
+ */
+export function bytes32ToString(hex: string): string {
+  if (!hex || typeof hex !== "string") return "";
+  const h = hex.startsWith("0x") ? hex : `0x${hex}`;
+  try {
+    const bytes = hexToBytes(h as `0x${string}`);
+    const end = bytes.findIndex((b) => b === 0);
+    const len = end === -1 ? bytes.length : end;
+    return new TextDecoder().decode(bytes.slice(0, len));
+  } catch {
+    return "";
+  }
+}
+
+/**
  * Detects Special NFTs that have a built-in background (no separate background layer).
  * These cannot cycle backgrounds.
  */
-export function isSpecialNft(metadata: { attributes?: Array<{ trait_type: string; value: string | number }> } | null): boolean {
+export function isSpecialNft(
+  metadata: {
+    attributes?: Array<{ trait_type: string; value: string | number }>;
+  } | null,
+): boolean {
   if (!metadata?.attributes) return false;
   return metadata.attributes.some(
     (a) =>
-      (a.trait_type.toLowerCase() === "type" && String(a.value).toLowerCase() === "special") ||
-      (a.trait_type.toLowerCase() === "special" && String(a.value).toLowerCase() === "yes")
+      (a.trait_type.toLowerCase() === "type" &&
+        String(a.value).toLowerCase() === "special") ||
+      (a.trait_type.toLowerCase() === "special" &&
+        String(a.value).toLowerCase() === "yes"),
   );
 }
 
@@ -26,11 +61,18 @@ export const parseTokenURI = (tokenUri: string) => {
     if (!jsonPart) throw new Error("Invalid token URI format");
     const metadata = JSON.parse(atob(jsonPart));
     const fullImage = metadata?.image;
-    if (!fullImage || typeof fullImage !== "string") throw new Error("No image in metadata");
+    if (!fullImage || typeof fullImage !== "string")
+      throw new Error("No image in metadata");
     const base64Svg = fullImage.split("data:image/svg+xml;base64,")[1];
     if (!base64Svg) {
       // Non-SVG image (e.g. Special NFT with built-in background) - return raw image
-      return { metadata, innerCharacterContent: "", viewBox: "0 0 48 48", imageDataUrl: fullImage, isSpecial: true };
+      return {
+        metadata,
+        innerCharacterContent: "",
+        viewBox: "0 0 48 48",
+        imageDataUrl: fullImage,
+        isSpecial: true,
+      };
     }
     const fullSvgString = atob(base64Svg);
 
@@ -44,10 +86,23 @@ export const parseTokenURI = (tokenUri: string) => {
     const fgGroup = svg.querySelector('g[id="GeneratedImage"]');
     const innerCharacterContent = fgGroup ? fgGroup.innerHTML : svg.innerHTML;
 
-    return { metadata, fullSvgString, innerCharacterContent, viewBox, imageDataUrl: null, isSpecial: false };
+    return {
+      metadata,
+      fullSvgString,
+      innerCharacterContent,
+      viewBox,
+      imageDataUrl: null,
+      isSpecial: false,
+    };
   } catch (e) {
     console.error("Error parsing Token URI", e);
-    return { metadata: null, innerCharacterContent: "", viewBox: "0 0 48 48", imageDataUrl: null, isSpecial: false };
+    return {
+      metadata: null,
+      innerCharacterContent: "",
+      viewBox: "0 0 48 48",
+      imageDataUrl: null,
+      isSpecial: false,
+    };
   }
 };
 
@@ -90,7 +145,7 @@ export function snapResolutionTo48(resolution: number): number {
 function prepareSvgForExport(
   svgString: string,
   resolution: number,
-  transparent: boolean
+  transparent: boolean,
 ): string {
   const parser = new DOMParser();
   const doc = parser.parseFromString(svgString, "image/svg+xml");
@@ -110,7 +165,7 @@ function prepareSvgForExport(
   svg.setAttribute("shape-rendering", "crispEdges");
   svg.setAttribute(
     "style",
-    "image-rendering: pixelated; image-rendering: crisp-edges; image-rendering: -moz-crisp-edges; image-rendering: -webkit-crisp-edges;"
+    "image-rendering: pixelated; image-rendering: crisp-edges; image-rendering: -moz-crisp-edges; image-rendering: -webkit-crisp-edges;",
   );
 
   // Add pixelated rendering to all image elements inside SVG
@@ -119,7 +174,7 @@ function prepareSvgForExport(
     img.setAttribute(
       "style",
       (img.getAttribute("style") || "") +
-        "image-rendering: pixelated; image-rendering: crisp-edges;"
+        "image-rendering: pixelated; image-rendering: crisp-edges;",
     );
   });
 
@@ -130,7 +185,7 @@ export const downloadPunkAsPng = async (
   svgString: string,
   resolution: number,
   fileName: string,
-  transparent: boolean = false
+  transparent: boolean = false,
 ): Promise<void> => {
   const res = snapResolutionTo48(resolution);
   const finalSvg = prepareSvgForExport(svgString, res, transparent);
@@ -151,7 +206,9 @@ export const downloadPunkAsPng = async (
         return;
       }
       ctx.imageSmoothingEnabled = false;
-      (ctx as CanvasRenderingContext2D & { imageSmoothingQuality?: string }).imageSmoothingQuality = "low";
+      (
+        ctx as CanvasRenderingContext2D & { imageSmoothingQuality?: string }
+      ).imageSmoothingQuality = "low";
       ctx.drawImage(img, 0, 0, res, res);
 
       canvas.toBlob(
@@ -169,7 +226,7 @@ export const downloadPunkAsPng = async (
           }
         },
         "image/png",
-        1
+        1,
       );
     };
     img.onerror = () => reject(new Error("Image load failed"));
@@ -183,7 +240,7 @@ export const downloadPunkAsPng = async (
 export const svgToPngDataUrl = async (
   svgString: string,
   resolution: number,
-  transparent: boolean = false
+  transparent: boolean = false,
 ): Promise<string> => {
   const finalSvg = prepareSvgForExport(svgString, resolution, transparent);
   const svg64 = btoa(unescape(encodeURIComponent(finalSvg)));
@@ -203,7 +260,9 @@ export const svgToPngDataUrl = async (
         return;
       }
       ctx.imageSmoothingEnabled = false;
-      (ctx as CanvasRenderingContext2D & { imageSmoothingQuality?: string }).imageSmoothingQuality = "low";
+      (
+        ctx as CanvasRenderingContext2D & { imageSmoothingQuality?: string }
+      ).imageSmoothingQuality = "low";
       ctx.drawImage(img, 0, 0, resolution, resolution);
       resolve(canvas.toDataURL("image/png"));
     };

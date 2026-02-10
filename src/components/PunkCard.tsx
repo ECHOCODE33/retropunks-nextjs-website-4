@@ -10,6 +10,7 @@ import {
   formatBirthday,
   downloadPunkAsPng,
   isSpecialNft,
+  stringToBytes32,
 } from "@/lib/utilities";
 import {
   buildIframeSrcdoc,
@@ -33,7 +34,7 @@ interface PunkCardProps {
   bio: string;
   onMetadataUpdate?: (
     tokenId: string,
-    updates: { name?: string; bio?: string }
+    updates: { name?: string; bio?: string; currentBg?: number },
   ) => void;
 }
 
@@ -89,9 +90,10 @@ export default function PunkCard({
 
   useEffect(() => {
     if (isSuccess && hash && lastUpdateType) {
-      if (lastUpdateType === "background")
+      if (lastUpdateType === "background") {
         toast.success("Background set on-chain");
-      else if (lastUpdateType === "name") {
+        onMetadataUpdate?.(tokenId, { currentBg: bgIndex });
+      } else if (lastUpdateType === "name") {
         toast.success("Name updated");
         onMetadataUpdate?.(tokenId, { name: submittedNameRef.current });
       } else if (lastUpdateType === "bio") {
@@ -100,7 +102,7 @@ export default function PunkCard({
       }
       setLastUpdateType(null);
     }
-  }, [isSuccess, hash, lastUpdateType, tokenId, onMetadataUpdate]);
+  }, [isSuccess, hash, lastUpdateType, tokenId, onMetadataUpdate, bgIndex]);
 
   useEffect(() => {
     if (!isAnyModalOpen) return;
@@ -138,7 +140,7 @@ export default function PunkCard({
         setSrcdoc("");
       } else {
         setSrcdoc(
-          buildIframeSrcdoc(parsed.innerCharacterContent, currentBg, tokenId)
+          buildIframeSrcdoc(parsed.innerCharacterContent, currentBg, tokenId),
         );
       }
     } catch {
@@ -233,36 +235,39 @@ export default function PunkCard({
     }
   };
 
-  const handleSetBackground = () => {
-    setLastUpdateType("background");
+  const saveTokenMetadata = (
+    nameStr: string,
+    bioStr: string,
+    backgroundIndex: number,
+  ) => {
     writeContract({
       address: RETROPUNKS_CONTRACT,
       abi: RETROPUNKS_ABI,
-      functionName: "setTokenBackground",
-      args: [BigInt(tokenId), BigInt(bgIndex)],
+      functionName: "setTokenMetadata",
+      args: [
+        BigInt(tokenId),
+        stringToBytes32(nameStr),
+        bioStr,
+        backgroundIndex,
+      ],
     });
+  };
+
+  const handleSetBackground = () => {
+    setLastUpdateType("background");
+    saveTokenMetadata(name, bio, bgIndex);
   };
 
   const handleUpdateName = () => {
     submittedNameRef.current = editName;
     setLastUpdateType("name");
-    writeContract({
-      address: RETROPUNKS_CONTRACT,
-      abi: RETROPUNKS_ABI,
-      functionName: "setTokenName",
-      args: [BigInt(tokenId), editName],
-    });
+    saveTokenMetadata(editName, editBio, bgIndex);
   };
 
   const handleUpdateBio = () => {
     submittedBioRef.current = editBio;
     setLastUpdateType("bio");
-    writeContract({
-      address: RETROPUNKS_CONTRACT,
-      abi: RETROPUNKS_ABI,
-      functionName: "setTokenBio",
-      args: [BigInt(tokenId), editBio],
-    });
+    saveTokenMetadata(editName, editBio, bgIndex);
   };
 
   const displayName = name?.trim() || `RetroPunk #${tokenId}`;
@@ -272,7 +277,7 @@ export default function PunkCard({
 
   if (!srcdoc && !imageDataUrl) {
     return (
-      <div className="border-2 border-retro-orange bg-retro-card overflow-hidden w-full max-w-[300px] mx-auto aspect-[3/4] flex items-center justify-center animate-fade-in">
+      <div className="border-2 border-retro-orange bg-retro-card overflow-hidden w-full max-w-[300px] mx-auto aspect-3/4 flex items-center justify-center animate-fade-in">
         <span className="text-retro-orange/60 text-sm">Loading...</span>
       </div>
     );
@@ -398,7 +403,7 @@ export default function PunkCard({
       {isDetailsOpen &&
         createPortal(
           <div
-            className="fixed inset-0 z-[100] flex flex-col p-2 sm:p-4 bg-retro-dark/90 overflow-hidden touch-pan-y"
+            className="fixed inset-0 z-100 flex flex-col p-2 sm:p-4 bg-retro-dark/90 overflow-hidden touch-pan-y"
             onClick={() => setIsDetailsOpen(false)}
             role="dialog"
             aria-modal="true"
@@ -442,7 +447,9 @@ export default function PunkCard({
               <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-contain">
                 {/* Image - top, fills width */}
                 <div className="flex items-center justify-center bg-retro-muted p-3 sm:p-4 shrink-0">
-                  <div className="w-full aspect-square mx-auto sm:max-w-125"> {/* max-w-[280px] sm:max-w-[340px] */}
+                  <div className="w-full aspect-square mx-auto sm:max-w-125">
+                    {" "}
+                    {/* max-w-[280px] sm:max-w-[340px] */}
                     {isSpecial && imageDataUrl ? (
                       <img
                         src={imageDataUrl}
@@ -543,14 +550,14 @@ export default function PunkCard({
               </div>
             </div>
           </div>,
-          document.body
+          document.body,
         )}
 
       {/* Download Modal - large preview */}
       {isDownloadOpen &&
         createPortal(
           <div
-            className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4 bg-retro-dark/90 overflow-y-auto touch-pan-y"
+            className="fixed inset-0 z-100 flex items-center justify-center p-2 sm:p-4 bg-retro-dark/90 overflow-y-auto touch-pan-y"
             onClick={() => setIsDownloadOpen(false)}
             role="dialog"
             aria-modal="true"
@@ -651,14 +658,14 @@ export default function PunkCard({
               </div>
             </div>
           </div>,
-          document.body
+          document.body,
         )}
 
       {/* Fullscreen Modal - responsive display */}
       {isFullscreenOpen &&
         createPortal(
           <div
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-retro-dark p-3 sm:p-6"
+            className="fixed inset-0 z-100 flex items-center justify-center bg-retro-dark p-3 sm:p-6"
             onClick={() => setIsFullscreenOpen(false)}
             role="dialog"
             aria-modal="true"
@@ -706,7 +713,7 @@ export default function PunkCard({
               )}
             </div>
           </div>,
-          document.body
+          document.body,
         )}
     </div>
   );
