@@ -2,11 +2,94 @@
 
 An NFT customization website for the RetroPunks collection. View and customize your on-chain punks with background cycling, downloads, and metadata editing.
 
-## Tech Stack
+## Directory Structure
+```
+.
+├── README.md
+├── eslint.config.mjs
+├── extra
+│   ├── Backgrounds.sol
+│   ├── ERC721SeaDropPausableAndQueryable.sol
+│   ├── IRetroPunks.sol
+│   ├── RetroPunks.sol
+│   ├── _BackgroundAssetUltimate.py
+│   ├── dependencies.json
+│   ├── full.json
+│   └── iframe-srcdoc.html
+├── next-env.d.ts
+├── next.config.ts
+├── package.json
+├── pnpm-lock.yaml
+├── pnpm-workspace.yaml
+├── postcss.config.mjs
+├── prompts
+│   ├── claude-og.md
+│   ├── claude.md
+│   ├── claude.xml
+│   ├── grok-2.md
+│   ├── grok-3.md
+│   └── grok.md
+├── public
+│   ├── arrow-back-icon.svg
+│   ├── arrow-forward-icon.svg
+│   ├── arrow.svg
+│   ├── discord.svg
+│   ├── download-icon.svg
+│   ├── etherscan.svg
+│   ├── fullscreen-icon.svg
+│   ├── image-icon.svg
+│   ├── info-icon.svg
+│   ├── open-in-browser-icon.svg
+│   ├── opensea.svg
+│   ├── punk.png
+│   └── x.svg
+├── src
+│   ├── app
+│   │   ├── ClientProviders.tsx
+│   │   ├── api
+│   │   │   └── read-contract
+│   │   │       └── route.ts
+│   │   ├── favicon.ico
+│   │   ├── globals.css
+│   │   ├── layout.tsx
+│   │   ├── license
+│   │   │   └── page.tsx
+│   │   ├── my-punks
+│   │   │   └── page.tsx
+│   │   ├── page.tsx
+│   │   ├── providers.tsx
+│   │   └── wagmi.ts
+│   ├── components
+│   │   ├── About.tsx
+│   │   ├── Creator.tsx
+│   │   ├── FAQ.tsx
+│   │   ├── Footer.tsx
+│   │   ├── Header.tsx
+│   │   ├── Mobile-Navbar.tsx
+│   │   ├── PunkCard.tsx
+│   │   ├── Tooltip.tsx
+│   │   └── icons
+│   │       ├── IconArrowBack.tsx
+│   │       ├── IconArrowForward.tsx
+│   │       ├── IconDownload.tsx
+│   │       ├── IconFullscreen.tsx
+│   │       ├── IconInfo.tsx
+│   │       ├── IconOpenInBrowser.tsx
+│   │       ├── IconSetBackground.tsx
+│   │       └── index.ts
+│   └── lib
+│       ├── backgrounds.ts
+│       ├── contracts.tsx
+│       ├── fonts.ts
+│       ├── iframeGenerator.ts
+│       ├── retropunksABI.json
+│       └── utilities.ts
+├── tailwind.config.ts
+├── tsconfig.json
+└── tsconfig.tsbuildinfo
 
-- **Next.js 16** · **React 19** · **TypeScript**
-- **Wagmi** · **Viem** · **RainbowKit**
-- **Tailwind CSS 4** · **Sonner** (toasts)
+13 directories, 70 files
+```
 
 ## Getting Started
 
@@ -33,29 +116,3 @@ pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-### Toasts (Sonner)
-
-The project uses [Sonner](https://sonner.emilkowal.ski/) for toast notifications. It's already wired in `src/app/providers.tsx`. Use it anywhere:
-
-```tsx
-import { toast } from "sonner";
-
-toast.success("Background set on-chain");
-toast.error("Download failed");
-```
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
