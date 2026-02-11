@@ -22,27 +22,27 @@ enum E_Background_Type {
 
 enum E_Background {
     Default,
-    Black,
+    Solid_Black,
 
-    Smooth_Vertical,
-    Pixelated_Vertical,
-    Smooth_Vertical_Inverse,
-    Pixelated_Vertical_Inverse,
+    S_Vertical,
+    P_Vertical,
+    S_Vertical_Inverse,
+    P_Vertical_Inverse,
 
-    Smooth_Horizontal,
-    Pixelated_Horizontal,
-    Smooth_Horizontal_Inverse,
-    Pixelated_Horizontal_Inverse,
+    S_Horizontal,
+    P_Horizontal,
+    S_Horizontal_Inverse,
+    P_Horizontal_Inverse
 
-    Smooth_Down,
-    Pixelated_Down,
-    Smooth_Down_Inverse,
-    Pixelated_Down_Inverse,
+    S_Down,
+    P_Down,
+    S_Down_Inverse,
+    P_Down_Inverse,
 
-    Smooth_Up,
-    Pixelated_Up,
-    Smooth_Up_Inverse,
-    Pixelated_Up_Inverse,
+    S_Up,
+    P_Up,
+    S_Up_Inverse,
+    P_Up_Inverse,
 
     Radial
 }
