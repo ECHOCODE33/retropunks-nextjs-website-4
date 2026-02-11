@@ -1,8 +1,3 @@
-/**
- * Generates srcdoc HTML for the NFT iframe display.
- * Injects character content from token metadata and adds postMessage API for background control.
- */
-
 const DEFAULT_IMAGE_PLACEHOLDER =
 	'<image href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAB5UlEQVR4AeyXMVLEMAxFBcfgGKSg3YqOO3CUPcp2HICOaiu6HACogZKCA4B/Es06GUxsfTmBmezkj2xHsvTknWT3XP75ZwNY+wC3E9hOgOzA9hUiG0iHbydAt5DcwOMEvkINFoUw/vIA4KsgdmAAuq43FyIWhZq7+GCpiwGgEnsFWwC6zmnXtZCmaQTS+ZyN4rv95vxT9y0Aqb1WWacB0HWobVuBlqagAZYueJqPBkDXoZvrnZRoWoh1TgNYE3vF0QDa9dKCrHHTPAUA09C/MXcDeHp+kVgpvNgH45Rf7robQG5Cb78SgO6NGb1BR7XcPb4KtLu6FGh0M5rAB4IPFN0yDUsATAlqB7kB7G93Ar1/fAokiQ98IPhACbfsZTeA7IzOjsUA7ZsI5FyHebtiAHOmSoElAGehBiiY03X/cBTotNKP9oejQP1MunE813XWlgCwuarEuwHgFCCtcj88lVJz+EJ632rdAKwFsHFuAKW/Lkv9U6BuAKkEtddpALwTIC0UT5ocqT9raQC2ADbeHUCfPnOWLVzj3QF046UsDaD/D/R7n1t45I+3O5QbOvKjAUa7rTBxAxidxKH/HaRd/skGVnQdCkP75QZgL4GLrAmA7v4mrvIhuibAkKKu2QDq9nd+928AAAD//0m3XPsAAAAGSURBVAMAs7DEJZhpsgcAAAAASUVORK5CYII=" width="48" height="48" x="0" y="0" />';
 
@@ -19,26 +14,15 @@ export const IFRAME_BACKGROUND_COUNT = 19;
  * @param initialBgIndex - Starting background index (0-based) - NFT's on-chain background
  * @param cardId - Unique ID (tokenId) so postMessage updates only the matching card
  */
-export function buildIframeSrcdoc(
-	innerCharacterContent: string,
-	initialBgIndex: number,
-	cardId: string
-): string {
-	const safeContent =
-		innerCharacterContent?.trim() || DEFAULT_IMAGE_PLACEHOLDER;
-	const safeIndex = Math.max(
-		0,
-		Math.min(Math.floor(initialBgIndex), IFRAME_BACKGROUND_COUNT - 1)
-	);
+export function buildIframeSrcdoc(innerCharacterContent: string, initialBgIndex: number, cardId: string): string {
+	const safeContent = innerCharacterContent?.trim() || DEFAULT_IMAGE_PLACEHOLDER;
+	const safeIndex = Math.max(0, Math.min(Math.floor(initialBgIndex), IFRAME_BACKGROUND_COUNT - 1));
 
 	const scriptInit = `let currentIndex = ${safeIndex};`;
 	const postMsgScript = getPostMessageScript(cardId);
 
 	const html = getIframeTemplate()
-		.replace(
-			/<g id="GeneratedImage">[\s\S]*?<\/g>/,
-			`<g id="GeneratedImage">${safeContent}</g>`
-		)
+		.replace(/<g id="GeneratedImage">[\s\S]*?<\/g>/, `<g id="GeneratedImage">${safeContent}</g>`)
 		.replace("let currentIndex = 0;", scriptInit)
 		.replace("initBackgroundSystem();", `${postMsgScript}initBackgroundSystem();`);
 
@@ -70,7 +54,7 @@ function getIframeTemplate(): string {
 		<script>
 			const BG_TYPES = { None: 0, Image: 1, Solid: 2, S_Vertical: 3, P_Vertical: 4, S_Horizontal: 5, P_Horizontal: 6, S_Down: 7, P_Down: 8, S_Up: 9, P_Up: 10, Radial: 11 };
 			const BACKGROUNDS = [
-				{ name: "Default", layerType: 2, palette: ["#b5b5b5"] },
+				{ name: "Default", layerType: 2, palette: ["#e8eded"] },
 				{ name: "Solid Black", layerType: 2, palette: ["#000000"] },
 				{ name: "Smooth Vertical", layerType: 3, palette: ["#000000", "#ffffff"] },
 				{ name: "Pixelated Vertical", layerType: 4, palette: ["#000000ff", "#020202ff", "#070707ff", "#0f0f0fff", "#161616ff", "#1e1e1eff", "#272727ff", "#333333ff", "#404040ff", "#4e4e4eff", "#5e5e5eff", "#6e6e6eff", "#808080ff", "#919191ff", "#a2a2a2ff", "#b3b3b3ff", "#c3c3c3ff", "#d2d2d2ff", "#dfdfdfff", "#eaeaeaff", "#f3f3f3ff", "#fafafaff", "#fefefeff", "#ffffffff"] },

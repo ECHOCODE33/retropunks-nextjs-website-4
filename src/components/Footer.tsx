@@ -7,7 +7,6 @@ export default function Footer() {
 	return (
 		<footer className="w-full bg-retro-dark border-t-2 border-retro-light py-8 px-16">
 			<div className="flex flex-col gap-10 mx-auto">
-
 				<div className="flex flex-row justify-between items-center">
 					<div className="flex justify-center items-center">
 						<Link href="/" className="flex items-center shrink-0">
@@ -39,7 +38,6 @@ export default function Footer() {
 				<div className="flex justify-center items-center w-full">
 					<p className="font-google text-gray-400 text-sm">© 2026 RetroPunks</p>
 				</div>
-
 			</div>
 		</footer>
 	);

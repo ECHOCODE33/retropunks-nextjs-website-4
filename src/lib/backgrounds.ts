@@ -22,9 +22,15 @@ export interface BackgroundOption {
   palette?: string[];
 }
 
+// Order and definitions must match extra/Backgrounds.sol (enum) and extra/_BackgroundAssetUltimate.py (BACKGROUNDS).
 export const BACKGROUND_OPTIONS: BackgroundOption[] = [
-  { id: 1, name: "Default", layerType: BG_TYPES.Image, palette: ["#e8eded"] },
-  { id: 1, name: "Solid Black", layerType: BG_TYPES.Solid, palette: ["#b5b5b5"] },
+  { id: 0, name: "Default", layerType: BG_TYPES.Solid, palette: ["#e8eded"] },
+  {
+    id: 1,
+    name: "Solid Black",
+    layerType: BG_TYPES.Solid,
+    palette: ["#000000"],
+  },
   {
     id: 2,
     name: "Smooth Vertical",
