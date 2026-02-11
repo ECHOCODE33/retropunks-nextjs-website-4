@@ -9,12 +9,16 @@ declare const XMLSerializer: {
   new (): { serializeToString(node: Node): string };
 };
 
+/** Max name byte length for RetroPunks setTokenMetadata (bytes32 = 32 bytes). */
+const RETROPUNKS_NAME_MAX_BYTES = 32;
+
 /**
- * Encode a string to bytes32 hex (left-padded, max 32 bytes UTF-8).
+ * Encode a string to bytes32 hex (max 32 bytes UTF-8; contract stores name as bytes32).
  * Used for RetroPunks setTokenMetadata name field.
  */
 export function stringToBytes32(s: string): `0x${string}` {
-  const bytes = new TextEncoder().encode(s.slice(0, 32));
+  const encoded = new TextEncoder().encode(s);
+  const bytes = encoded.slice(0, RETROPUNKS_NAME_MAX_BYTES);
   const padded = new Uint8Array(32);
   padded.set(bytes);
   return bytesToHex(padded) as `0x${string}`;
@@ -34,6 +38,36 @@ export function bytes32ToString(hex: string): string {
   } catch {
     return "";
   }
+}
+
+/** Max bio length allowed by RetroPunks setTokenMetadata (reverts with BioIsTooLong otherwise). */
+export const RETROPUNKS_BIO_MAX_LENGTH = 160;
+
+/**
+ * Valid name characters for RetroPunks setTokenMetadata (matches contract: 0-9, A-Z, a-z, space, ! - . _ ').
+ */
+const RETROPUNKS_NAME_ALLOWED =
+  /^[\dA-Za-z\x20!\-._']*$/;
+
+/**
+ * Validates name for setTokenMetadata. Returns error message or null if valid.
+ */
+export function validateRetroPunksName(name: string): string | null {
+  if (new TextEncoder().encode(name).length > RETROPUNKS_NAME_MAX_BYTES)
+    return "Name must be 32 bytes or less";
+  if (!RETROPUNKS_NAME_ALLOWED.test(name))
+    return "Name can only use letters, numbers, spaces, and ! - . _ '";
+  return null;
+}
+
+/**
+ * Validates bio for setTokenMetadata. Returns error message or null if valid.
+ */
+export function validateRetroPunksBio(bio: string): string | null {
+  const len = new TextEncoder().encode(bio).length;
+  if (len > RETROPUNKS_BIO_MAX_LENGTH)
+    return `Bio must be ${RETROPUNKS_BIO_MAX_LENGTH} characters or less`;
+  return null;
 }
 
 /**

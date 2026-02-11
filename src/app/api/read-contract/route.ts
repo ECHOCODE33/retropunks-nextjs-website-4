@@ -1,14 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createPublicClient, http } from "viem";
 import { base } from "viem/chains";
-import { RETROPUNKS_ABI } from "@/lib/contracts";
+import { RETROPUNKS_ABI, RETROPUNKS_CONTRACT } from "@/lib/contracts";
+
+const BASE_MAINNET_CHAIN_ID = 8453;
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
   const { contractAddress, functionName, args, chainId } = body;
 
-  if (!chainId)
+  if (chainId == null || chainId === "")
     return NextResponse.json({ error: "chainId is required" }, { status: 400 });
+
+  if (Number(chainId) !== BASE_MAINNET_CHAIN_ID)
+    return NextResponse.json(
+      { error: "Only Base Mainnet (chainId 8453) is supported" },
+      { status: 400 },
+    );
 
   const selectedChain = base;
   const rpcUrl = process.env.NEXT_PUBLIC_RPC_URL;
@@ -29,8 +37,14 @@ export async function POST(request: NextRequest) {
       return arg;
     });
 
+    const address =
+      (contractAddress as string)?.toLowerCase() ===
+      RETROPUNKS_CONTRACT.toLowerCase()
+        ? RETROPUNKS_CONTRACT
+        : (contractAddress as `0x${string}`);
+
     let result = await publicClient.readContract({
-      address: contractAddress as `0x${string}`,
+      address,
       abi: RETROPUNKS_ABI,
       functionName,
       args: processedArgs,

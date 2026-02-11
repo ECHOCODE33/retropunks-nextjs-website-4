@@ -6,6 +6,8 @@ import PunkCard from "@/components/PunkCard";
 import { RETROPUNKS_CONTRACT } from "@/lib/contracts";
 import { bytes32ToString } from "@/lib/utilities";
 
+const BASE_MAINNET_CHAIN_ID = 8453;
+
 export default function MyPunksPage() {
   const { address, isConnected } = useAccount();
   const chainId = useChainId();
@@ -24,6 +26,11 @@ export default function MyPunksPage() {
   useEffect(() => {
     async function fetchTokens() {
       if (!address || !isConnected) {
+        setLoading(false);
+        return;
+      }
+      if (chainId !== BASE_MAINNET_CHAIN_ID) {
+        setTokens([]);
         setLoading(false);
         return;
       }
@@ -115,6 +122,22 @@ export default function MyPunksPage() {
           <p className="text-gray-400 text-sm">
             Connect your wallet to view and customize your RetroPunks
             collection.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (chainId !== BASE_MAINNET_CHAIN_ID) {
+    return (
+      <div className="w-full min-h-[60vh] flex flex-col items-center justify-center px-4">
+        <div className="text-center max-w-md">
+          <h2 className="text-2xl font-bold text-white mb-3">
+            Wrong network
+          </h2>
+          <p className="text-gray-400 text-sm">
+            RetroPunks are on Base Mainnet. Please switch your wallet to Base to
+            view and customize your collection.
           </p>
         </div>
       </div>

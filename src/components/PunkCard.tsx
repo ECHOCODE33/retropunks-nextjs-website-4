@@ -11,6 +11,8 @@ import {
   downloadPunkAsPng,
   isSpecialNft,
   stringToBytes32,
+  validateRetroPunksName,
+  validateRetroPunksBio,
 } from "@/lib/utilities";
 import {
   buildIframeSrcdoc,
@@ -240,6 +242,16 @@ export default function PunkCard({
     bioStr: string,
     backgroundIndex: number,
   ) => {
+    const nameError = validateRetroPunksName(nameStr);
+    if (nameError) {
+      toast.error(nameError);
+      return;
+    }
+    const bioError = validateRetroPunksBio(bioStr);
+    if (bioError) {
+      toast.error(bioError);
+      return;
+    }
     writeContract({
       address: RETROPUNKS_CONTRACT,
       abi: RETROPUNKS_ABI,

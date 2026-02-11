@@ -70,8 +70,8 @@ function getIframeTemplate(): string {
 		<script>
 			const BG_TYPES = { None: 0, Image: 1, Solid: 2, S_Vertical: 3, P_Vertical: 4, S_Horizontal: 5, P_Horizontal: 6, S_Down: 7, P_Down: 8, S_Up: 9, P_Up: 10, Radial: 11 };
 			const BACKGROUNDS = [
-				{ name: "Rainbow", layerType: 1, palette: [], imageURL: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAoklEQVR4AeySwQnAMBDDSrbsPB08XSAfI5wQUKGf4nN6UsY7v3nzO57LHxc4LVADGoAEvEIQIB7XAEYICzQAAeJxDWCEsEADECAe1wBGCAs0AAHi8cAAPqtS4AIVrEGpBgJYlagGKliDUg0EsCpRDVSwBqUaCGBVohqoYA1KNRDAqkQ1UMEalGoggFWJdgxUfnVd6gJrLvu+amAf6/VJ1xv4AQAA//+jofUJAAAABklEQVQDAJ+DiUFbqG1BAAAAAElFTkSuQmCC" },
-				{ name: "Solid", layerType: 2, palette: ["#b5b5b5"] },
+				{ name: "Default", layerType: 2, palette: ["#b5b5b5"] },
+				{ name: "Solid Black", layerType: 2, palette: ["#000000"] },
 				{ name: "Smooth Vertical", layerType: 3, palette: ["#000000", "#ffffff"] },
 				{ name: "Pixelated Vertical", layerType: 4, palette: ["#000000ff", "#020202ff", "#070707ff", "#0f0f0fff", "#161616ff", "#1e1e1eff", "#272727ff", "#333333ff", "#404040ff", "#4e4e4eff", "#5e5e5eff", "#6e6e6eff", "#808080ff", "#919191ff", "#a2a2a2ff", "#b3b3b3ff", "#c3c3c3ff", "#d2d2d2ff", "#dfdfdfff", "#eaeaeaff", "#f3f3f3ff", "#fafafaff", "#fefefeff", "#ffffffff"] },
 				{ name: "Smooth Vertical Inverse", layerType: 3, palette: ["#ffffff", "#000000"] },
