@@ -1,5 +1,5 @@
 import { type Abi, type Address } from "viem";
-import retropunksAbi from "../../extra/retropunksABI.json";
+import retropunksAbi from "./retropunksABI.json";
 
 export const RETROPUNKS_ABI = retropunksAbi as Abi;
 
