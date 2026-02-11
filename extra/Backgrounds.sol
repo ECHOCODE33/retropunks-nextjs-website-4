@@ -1,3 +1,25 @@
+// Down: Top left --> bottom right (diagonal)
+// Up: Top right --> bottom left (diagonal)
+
+enum E_Background_Type {
+    None, // not a background
+    Background_Image,
+    Solid,
+
+    S_Vertical,
+    P_Vertical,
+
+    S_Horizontal,
+    P_Horizontal,
+
+    S_Down,
+    P_Down,
+    S_Up,
+    P_Up,
+
+    Radial
+}
+
 enum E_Background {
     Default,
     Black,
@@ -12,15 +34,15 @@ enum E_Background {
     Smooth_Horizontal_Inverse,
     Pixelated_Horizontal_Inverse,
 
-    Smooth_Diagonal,
-    Pixelated_Diagonal,
-    Smooth_Diagonal_Inverse,
-    Pixelated_Diagonal_Inverse,
+    Smooth_Down,
+    Pixelated_Down,
+    Smooth_Down_Inverse,
+    Pixelated_Down_Inverse,
 
-    Smooth_Reverse_Diagonal,
-    Pixelated_Reverse_Diagonal,
-    Smooth_Reverse_Diagonal_Inverse,
-    Pixelated_Reverse_Diagonal_Inverse,
+    Smooth_Up,
+    Pixelated_Up,
+    Smooth_Up_Inverse,
+    Pixelated_Up_Inverse,
 
     Radial
 }
