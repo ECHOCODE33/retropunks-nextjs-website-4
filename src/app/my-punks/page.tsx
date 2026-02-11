@@ -203,7 +203,7 @@ export default function MyPunksPage() {
 										setTokens((prev) => prev.map((t) => (t.tokenId === id ? { ...t, tokenUri: newUri } : t)));
 									}
 								} catch {
-									// Refetch failed; token will keep previous tokenUri
+									// Refetch failed; token will keep previous tokenURI
 								}
 							}}
 						/>
