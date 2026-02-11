@@ -2,7 +2,7 @@
 
 An NFT customization website for the RetroPunks collection. View and customize your on-chain punks with background cycling, downloads, and metadata editing.
 
-## Directory Structure
+## Root Directory Structure
 ```
 .
 ├── README.md
@@ -22,13 +22,6 @@ An NFT customization website for the RetroPunks collection. View and customize y
 ├── pnpm-lock.yaml
 ├── pnpm-workspace.yaml
 ├── postcss.config.mjs
-├── prompts
-│   ├── claude-og.md
-│   ├── claude.md
-│   ├── claude.xml
-│   ├── grok-2.md
-│   ├── grok-3.md
-│   └── grok.md
 ├── public
 │   ├── arrow-back-icon.svg
 │   ├── arrow-forward-icon.svg
@@ -91,28 +84,12 @@ An NFT customization website for the RetroPunks collection. View and customize y
 13 directories, 70 files
 ```
 
-## Getting Started
+If you want to find the raw source code for any file in this directory, you can find it by using the following as a prefix: 
 
-### 1. Install dependencies
+```https://raw.githubusercontent.com/ECHOCODE33/retropunks-nextjs-website-4/refs/heads/main/```
 
-```bash
-pnpm install
-```
+This is the root directory, just use this as a prefix link and at the end, enter the file path in root directory strcuture, for example:
 
-### 2. Environment variables
-
-Create a `.env` file with:
-
-```
-NEXT_PUBLIC_CONTRACT_ADDRESS=<your-contract-address>
-NEXT_PUBLIC_RPC_URL=<alchemy-or-infura-url>
-NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=<walletconnect-project-id>
-```
-
-### 3. Run the development server
-
-```bash
-pnpm dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+- [https://raw.githubusercontent.com/ECHOCODE33/retropunks-nextjs-website-4/refs/heads/main/src/app/page.tsx](https://raw.githubusercontent.com/ECHOCODE33/retropunks-nextjs-website-4/refs/heads/main/src/app/page.tsx)
+- [https://raw.githubusercontent.com/ECHOCODE33/retropunks-nextjs-website-4/refs/heads/main/src/lib/contracts.tsx](https://raw.githubusercontent.com/ECHOCODE33/retropunks-nextjs-website-4/refs/heads/main/src/lib/contracts.tsx)
+- [https://raw.githubusercontent.com/ECHOCODE33/retropunks-nextjs-website-4/refs/heads/main/extra/RetroPunks.sol](https://raw.githubusercontent.com/ECHOCODE33/retropunks-nextjs-website-4/refs/heads/main/extra/Backgrounds.sol)
