@@ -4,24 +4,34 @@ An NFT customization website for the RetroPunks collection. View and customize y
 
 ## Root Directory Structure
 ```
-.
+retropunks-nextjs-website-4
 ├── README.md
 ├── eslint.config.mjs
 ├── extra
+│   ├── BackgroundAssetGenerator.py
 │   ├── Backgrounds.sol
 │   ├── ERC721SeaDropPausableAndQueryable.sol
 │   ├── IRetroPunks.sol
 │   ├── RetroPunks.sol
-│   ├── _BackgroundAssetUltimate.py
 │   ├── dependencies.json
-│   ├── full.json
-│   └── iframe-srcdoc.html
+│   ├── iframe-srcdoc.html
+│   ├── old-retropunksABI.json
+│   ├── organized-dependencies.json
+│   └── retropunksABI.zsh
 ├── next-env.d.ts
 ├── next.config.ts
 ├── package.json
 ├── pnpm-lock.yaml
 ├── pnpm-workspace.yaml
 ├── postcss.config.mjs
+├── prompts
+│   ├── claude-og.md
+│   ├── claude.md
+│   ├── claude.xml
+│   ├── claude2.md
+│   ├── grok-2.md
+│   ├── grok-3.md
+│   └── grok.md
 ├── public
 │   ├── arrow-back-icon.svg
 │   ├── arrow-forward-icon.svg
@@ -71,17 +81,15 @@ An NFT customization website for the RetroPunks collection. View and customize y
 │   │       ├── IconSetBackground.tsx
 │   │       └── index.ts
 │   └── lib
+│       ├── RetroPunksABI.json
 │       ├── backgrounds.ts
 │       ├── contracts.tsx
 │       ├── fonts.ts
 │       ├── iframeGenerator.ts
-│       ├── retropunksABI.json
 │       └── utilities.ts
 ├── tailwind.config.ts
 ├── tsconfig.json
 └── tsconfig.tsbuildinfo
-
-13 directories, 70 files
 ```
 
 If you want to find the raw source code for any file in this directory, you can find it by using the following as a prefix: 

@@ -3,6 +3,95 @@
 		"name": "next",
 		"version": "16.1.6",
 		"description": "The React Framework",
+		"main": "./dist/server/next.js",
+		"license": "MIT",
+		"repository": "vercel/next.js",
+		"bugs": "https://github.com/vercel/next.js/issues",
+		"homepage": "https://nextjs.org",
+		"types": "index.d.ts",
+		"files": [
+			"dist",
+			"app.js",
+			"app.d.ts",
+			"babel.js",
+			"babel.d.ts",
+			"client.js",
+			"client.d.ts",
+			"compat",
+			"cache.js",
+			"cache.d.ts",
+			"constants.js",
+			"constants.d.ts",
+			"document.js",
+			"document.d.ts",
+			"dynamic.js",
+			"dynamic.d.ts",
+			"error.js",
+			"error.d.ts",
+			"future",
+			"legacy",
+			"script.js",
+			"script.d.ts",
+			"server.js",
+			"server.d.ts",
+			"head.js",
+			"head.d.ts",
+			"image.js",
+			"image.d.ts",
+			"link.js",
+			"link.d.ts",
+			"form.js",
+			"form.d.ts",
+			"router.js",
+			"router.d.ts",
+			"jest.js",
+			"jest.d.ts",
+			"og.js",
+			"og.d.ts",
+			"root-params.js",
+			"root-params.d.ts",
+			"types.d.ts",
+			"types.js",
+			"index.d.ts",
+			"types/global.d.ts",
+			"types/compiled.d.ts",
+			"image-types/global.d.ts",
+			"navigation-types/navigation.d.ts",
+			"navigation-types/compat/navigation.d.ts",
+			"font",
+			"navigation.js",
+			"navigation.d.ts",
+			"headers.js",
+			"headers.d.ts",
+			"navigation-types",
+			"web-vitals.js",
+			"web-vitals.d.ts",
+			"experimental/testing/server.js",
+			"experimental/testing/server.d.ts",
+			"experimental/testmode/playwright.js",
+			"experimental/testmode/playwright.d.ts",
+			"experimental/testmode/playwright/msw.js",
+			"experimental/testmode/playwright/msw.d.ts",
+			"experimental/testmode/proxy.js",
+			"experimental/testmode/proxy.d.ts"
+		],
+		"bin": {
+			"next": "./dist/bin/next"
+		},
+		"scripts": {
+			"dev": "cross-env NEXT_SERVER_NO_MANGLE=1 taskr",
+			"build": "taskr release",
+			"prepublishOnly": "cd ../../ && turbo run build",
+			"types": "tsc --project tsconfig.build.json --declaration --emitDeclarationOnly --stripInternal --declarationDir dist",
+			"typescript": "tsec --noEmit",
+			"ncc-compiled": "taskr ncc",
+			"storybook": "BROWSER=none storybook dev -p 6006",
+			"build-storybook": "storybook build",
+			"test-storybook": "test-storybook"
+		},
+		"taskr": {
+			"requires": ["./taskfile-webpack.js", "./taskfile-ncc.js", "./taskfile-swc.js", "./taskfile-watch.js"]
+		},
 		"dependencies": {
 			"@next/env": "16.1.6",
 			"@swc/helpers": "0.5.15",
@@ -268,18 +357,107 @@
 			"ws": "8.2.3",
 			"zod": "3.25.76",
 			"zod-validation-error": "3.4.0"
+		},
+		"keywords": ["react", "framework", "nextjs", "web", "server", "node", "front-end", "backend", "cli", "vercel"],
+		"engines": {
+			"node": ">=20.9.0"
 		}
 	},
 	{
 		"name": "react",
 		"description": "React is a JavaScript library for building user interfaces.",
-		"version": "19.2.4"
+		"keywords": ["react"],
+		"version": "19.2.4",
+		"homepage": "https://react.dev/",
+		"bugs": "https://github.com/facebook/react/issues",
+		"license": "MIT",
+		"files": ["LICENSE", "README.md", "index.js", "cjs/", "compiler-runtime.js", "jsx-runtime.js", "jsx-runtime.react-server.js", "jsx-dev-runtime.js", "jsx-dev-runtime.react-server.js", "react.react-server.js"],
+		"main": "index.js",
+		"exports": {
+			".": {
+				"react-server": "./react.react-server.js",
+				"default": "./index.js"
+			},
+			"./package.json": "./package.json",
+			"./jsx-runtime": {
+				"react-server": "./jsx-runtime.react-server.js",
+				"default": "./jsx-runtime.js"
+			},
+			"./jsx-dev-runtime": {
+				"react-server": "./jsx-dev-runtime.react-server.js",
+				"default": "./jsx-dev-runtime.js"
+			},
+			"./compiler-runtime": {
+				"react-server": "./compiler-runtime.js",
+				"default": "./compiler-runtime.js"
+			}
+		},
+		"repository": {
+			"type": "git",
+			"url": "https://github.com/facebook/react.git",
+			"directory": "packages/react"
+		},
+		"engines": {
+			"node": ">=0.10.0"
+		}
 	},
 	{
 		"name": "wagmi",
 		"description": "React Hooks for Ethereum",
 		"version": "3.4.2",
 		"license": "MIT",
+		"repository": {
+			"type": "git",
+			"url": "https://github.com/wevm/wagmi.git",
+			"directory": "packages/react"
+		},
+		"files": ["dist/**", "!dist/**/*.tsbuildinfo", "src/**/*.ts", "!src/**/*.test.ts", "!src/**/*.test-d.ts", "/actions", "/chains", "/codegen", "/connectors", "/query", "/tempo"],
+		"sideEffects": false,
+		"type": "module",
+		"main": "./dist/esm/exports/index.js",
+		"types": "./dist/types/exports/index.d.ts",
+		"typings": "./dist/types/exports/index.d.ts",
+		"exports": {
+			".": {
+				"types": "./dist/types/exports/index.d.ts",
+				"default": "./dist/esm/exports/index.js"
+			},
+			"./actions": {
+				"types": "./dist/types/exports/actions.d.ts",
+				"default": "./dist/esm/exports/actions.js"
+			},
+			"./chains": {
+				"types": "./dist/types/exports/chains.d.ts",
+				"default": "./dist/esm/exports/chains.js"
+			},
+			"./codegen": {
+				"types": "./dist/types/exports/codegen.d.ts",
+				"default": "./dist/esm/exports/codegen.js"
+			},
+			"./connectors": {
+				"types": "./dist/types/exports/connectors.d.ts",
+				"default": "./dist/esm/exports/connectors.js"
+			},
+			"./query": {
+				"types": "./dist/types/exports/query.d.ts",
+				"default": "./dist/esm/exports/query.js"
+			},
+			"./tempo": {
+				"types": "./dist/types/exports/tempo.d.ts",
+				"default": "./dist/esm/exports/tempo.js"
+			},
+			"./package.json": "./package.json"
+		},
+		"typesVersions": {
+			"*": {
+				"actions": ["./dist/types/exports/actions.d.ts"],
+				"chains": ["./dist/types/exports/chains.d.ts"],
+				"codegen": ["./dist/types/exports/codegen.d.ts"],
+				"connectors": ["./dist/types/exports/connectors.d.ts"],
+				"query": ["./dist/types/exports/query.d.ts"],
+				"tempo": ["./dist/types/exports/tempo.d.ts"]
+			}
+		},
 		"peerDependencies": {
 			"@tanstack/react-query": ">=5.0.0",
 			"react": ">=18",
@@ -295,12 +473,167 @@
 			"use-sync-external-store": "1.4.0",
 			"@wagmi/connectors": "7.1.6",
 			"@wagmi/core": "3.3.2"
-		}
+		},
+		"contributors": ["awkweb.eth <t@wevm.dev>", "jxom.eth <j@wevm.dev>"],
+		"funding": "https://github.com/sponsors/wevm",
+		"keywords": ["wagmi", "react", "hooks", "eth", "ethereum", "dapps", "wallet", "web3"]
 	},
 	{
 		"name": "viem",
 		"description": "TypeScript Interface for Ethereum",
 		"version": "2.45.1",
+		"main": "./_cjs/index.js",
+		"module": "./_esm/index.js",
+		"types": "./_types/index.d.ts",
+		"typings": "./_types/index.d.ts",
+		"sideEffects": false,
+		"files": ["*", "!**/*.bench.ts", "!**/*.bench-d.ts", "!**/*.test.ts", "!**/*.test.ts.snap", "!**/*.test-d.ts", "!**/*.tsbuildinfo", "!tsconfig.build.json", "!jsr.json"],
+		"exports": {
+			".": {
+				"types": "./_types/index.d.ts",
+				"import": "./_esm/index.js",
+				"default": "./_cjs/index.js"
+			},
+			"./account-abstraction": {
+				"types": "./_types/account-abstraction/index.d.ts",
+				"import": "./_esm/account-abstraction/index.js",
+				"default": "./_cjs/account-abstraction/index.js"
+			},
+			"./accounts": {
+				"types": "./_types/accounts/index.d.ts",
+				"import": "./_esm/accounts/index.js",
+				"default": "./_cjs/accounts/index.js"
+			},
+			"./actions": {
+				"types": "./_types/actions/index.d.ts",
+				"import": "./_esm/actions/index.js",
+				"default": "./_cjs/actions/index.js"
+			},
+			"./celo": {
+				"types": "./_types/celo/index.d.ts",
+				"import": "./_esm/celo/index.js",
+				"default": "./_cjs/celo/index.js"
+			},
+			"./chains": {
+				"types": "./_types/chains/index.d.ts",
+				"import": "./_esm/chains/index.js",
+				"default": "./_cjs/chains/index.js"
+			},
+			"./chains/utils": {
+				"types": "./_types/chains/utils.d.ts",
+				"import": "./_esm/chains/utils.js",
+				"default": "./_cjs/chains/utils.js"
+			},
+			"./ens": {
+				"types": "./_types/ens/index.d.ts",
+				"import": "./_esm/ens/index.js",
+				"default": "./_cjs/ens/index.js"
+			},
+			"./experimental": {
+				"types": "./_types/experimental/index.d.ts",
+				"import": "./_esm/experimental/index.js",
+				"default": "./_cjs/experimental/index.js"
+			},
+			"./experimental/erc7739": {
+				"types": "./_types/experimental/erc7739/index.d.ts",
+				"import": "./_esm/experimental/erc7739/index.js",
+				"default": "./_cjs/experimental/erc7739/index.js"
+			},
+			"./experimental/erc7821": {
+				"types": "./_types/experimental/erc7821/index.d.ts",
+				"import": "./_esm/experimental/erc7821/index.js",
+				"default": "./_cjs/experimental/erc7821/index.js"
+			},
+			"./experimental/erc7811": {
+				"types": "./_types/experimental/erc7811/index.d.ts",
+				"import": "./_esm/experimental/erc7811/index.js",
+				"default": "./_cjs/experimental/erc7811/index.js"
+			},
+			"./experimental/erc7846": {
+				"types": "./_types/experimental/erc7846/index.d.ts",
+				"import": "./_esm/experimental/erc7846/index.js",
+				"default": "./_cjs/experimental/erc7846/index.js"
+			},
+			"./experimental/erc7895": {
+				"types": "./_types/experimental/erc7895/index.d.ts",
+				"import": "./_esm/experimental/erc7895/index.js",
+				"default": "./_cjs/experimental/erc7895/index.js"
+			},
+			"./linea": {
+				"types": "./_types/linea/index.d.ts",
+				"import": "./_esm/linea/index.js",
+				"default": "./_cjs/linea/index.js"
+			},
+			"./node": {
+				"types": "./_types/node/index.d.ts",
+				"import": "./_esm/node/index.js",
+				"default": "./_cjs/node/index.js"
+			},
+			"./nonce": {
+				"types": "./_types/nonce/index.d.ts",
+				"import": "./_esm/nonce/index.js",
+				"default": "./_cjs/nonce/index.js"
+			},
+			"./op-stack": {
+				"types": "./_types/op-stack/index.d.ts",
+				"import": "./_esm/op-stack/index.js",
+				"default": "./_cjs/op-stack/index.js"
+			},
+			"./siwe": {
+				"types": "./_types/siwe/index.d.ts",
+				"import": "./_esm/siwe/index.js",
+				"default": "./_cjs/siwe/index.js"
+			},
+			"./tempo": {
+				"types": "./_types/tempo/index.d.ts",
+				"import": "./_esm/tempo/index.js",
+				"default": "./_cjs/tempo/index.js"
+			},
+			"./tempo/actions": {
+				"types": "./_types/tempo/actions/index.d.ts",
+				"import": "./_esm/tempo/actions/index.js",
+				"default": "./_cjs/tempo/actions/index.js"
+			},
+			"./utils": {
+				"types": "./_types/utils/index.d.ts",
+				"import": "./_esm/utils/index.js",
+				"default": "./_cjs/utils/index.js"
+			},
+			"./window": {
+				"types": "./_types/window/index.d.ts",
+				"import": "./_esm/window/index.js",
+				"default": "./_cjs/window/index.js"
+			},
+			"./zksync": {
+				"types": "./_types/zksync/index.d.ts",
+				"import": "./_esm/zksync/index.js",
+				"default": "./_cjs/zksync/index.js"
+			},
+			"./package.json": "./package.json"
+		},
+		"typesVersions": {
+			"*": {
+				"accounts": ["./_types/accounts/index.d.ts"],
+				"actions": ["./_types/actions/index.d.ts"],
+				"celo": ["./_types/celo/index.d.ts"],
+				"chains": ["./_types/chains/index.d.ts"],
+				"chains/utils": ["./_types/chains/utils.d.ts"],
+				"ens": ["./_types/ens/index.d.ts"],
+				"experimental": ["./_types/experimental/index.d.ts"],
+				"experimental/erc7739": ["./_types/experimental/erc7739/index.d.ts"],
+				"experimental/erc7821": ["./_types/experimental/erc7821/index.d.ts"],
+				"experimental/erc7846": ["./_types/experimental/erc7846/index.d.ts"],
+				"experimental/erc7895": ["./_types/experimental/erc7895/index.d.ts"],
+				"node": ["./_types/node/index.d.ts"],
+				"op-stack": ["./_types/op-stack/index.d.ts"],
+				"siwe": ["./_types/siwe/index.d.ts"],
+				"tempo": ["./_types/tempo/index.d.ts"],
+				"tempo/actions": ["./_types/tempo/actions/index.d.ts"],
+				"utils": ["./_types/utils/index.d.ts"],
+				"window": ["./_types/window/index.d.ts"],
+				"zksync": ["./_types/zksync/index.d.ts"]
+			}
+		},
 		"peerDependencies": {
 			"typescript": ">=5.0.4"
 		},
@@ -318,13 +651,45 @@
 			"isows": "1.0.7",
 			"ox": "0.11.3",
 			"ws": "8.18.3"
-		}
+		},
+		"license": "MIT",
+		"homepage": "https://viem.sh",
+		"repository": {
+			"type": "git",
+			"url": "https://github.com/wevm/viem.git"
+		},
+		"bugs": {
+			"url": "https://github.com/wevm/viem/issues"
+		},
+		"authors": ["awkweb.eth", "jxom.eth"],
+		"funding": [
+			{
+				"type": "github",
+				"url": "https://github.com/sponsors/wevm"
+			}
+		],
+		"keywords": ["eth", "ethereum", "dapps", "wallet", "web3", "typescript"]
 	},
 	{
 		"name": "@rainbow-me/rainbowkit",
 		"version": "2.2.10",
 		"description": "The best way to connect a wallet",
+		"files": ["dist", "styles.css", "wallets"],
+		"type": "module",
+		"exports": {
+			".": "./dist/index.js",
+			"./styles.css": "./dist/index.css",
+			"./wallets": "./dist/wallets/walletConnectors/index.js"
+		},
+		"main": "./dist/index.js",
+		"types": "./dist/index.d.ts",
+		"sideEffects": ["src/css/reset.css.ts"],
+		"engines": {
+			"node": ">=12.4"
+		},
+		"keywords": ["ens", "ethereum", "react", "react-hook", "hooks", "blockchain"],
 		"author": "Rainbow",
+		"license": "MIT",
 		"peerDependencies": {
 			"@tanstack/react-query": ">=5.0.0",
 			"react": ">=18",
@@ -357,12 +722,59 @@
 			"cuer": "0.0.3",
 			"react-remove-scroll": "2.6.2",
 			"ua-parser-js": "^1.0.37"
+		},
+		"repository": {
+			"type": "git",
+			"url": "git+https://github.com/rainbow-me/rainbowkit.git",
+			"directory": "packages/rainbowkit"
+		},
+		"scripts": {
+			"build": "node build.js",
+			"build:watch": "node build.js --watch",
+			"dev": "pnpm build:watch & pnpm typegen:watch",
+			"prebuild": "pnpm typegen",
+			"typecheck": "pnpm tsc --noEmit",
+			"typegen": "tsc --emitDeclarationOnly || true",
+			"typegen:watch": "tsc --emitDeclarationOnly --watch"
 		}
 	},
 	{
 		"name": "@tanstack/react-query",
 		"version": "5.90.20",
 		"description": "Hooks for managing, caching and syncing asynchronous and remote data in React",
+		"author": "tannerlinsley",
+		"license": "MIT",
+		"repository": {
+			"type": "git",
+			"url": "git+https://github.com/TanStack/query.git",
+			"directory": "packages/react-query"
+		},
+		"homepage": "https://tanstack.com/query",
+		"funding": {
+			"type": "github",
+			"url": "https://github.com/sponsors/tannerlinsley"
+		},
+		"type": "module",
+		"types": "build/legacy/index.d.ts",
+		"main": "build/legacy/index.cjs",
+		"module": "build/legacy/index.js",
+		"react-native": "src/index.ts",
+		"exports": {
+			".": {
+				"@tanstack/custom-condition": "./src/index.ts",
+				"import": {
+					"types": "./build/modern/index.d.ts",
+					"default": "./build/modern/index.js"
+				},
+				"require": {
+					"types": "./build/modern/index.d.cts",
+					"default": "./build/modern/index.cjs"
+				}
+			},
+			"./package.json": "./package.json"
+		},
+		"sideEffects": false,
+		"files": ["build", "src", "!src/__tests__", "!build/codemods/node_modules", "!build/codemods/vite.config.ts", "!build/codemods/**/__testfixtures__", "!build/codemods/**/__tests__"],
 		"dependencies": {
 			"@tanstack/query-core": "5.90.20"
 		},
@@ -382,12 +794,96 @@
 		},
 		"peerDependencies": {
 			"react": "^18 || ^19"
+		},
+		"scripts": {
+			"clean": "premove ./build ./coverage ./dist-ts",
+			"compile": "tsc --build",
+			"test:eslint": "eslint --concurrency=auto ./src",
+			"test:types": "npm-run-all --serial test:types:*",
+			"test:types:ts50": "node ../../node_modules/typescript50/lib/tsc.js --build tsconfig.legacy.json",
+			"test:types:ts51": "node ../../node_modules/typescript51/lib/tsc.js --build tsconfig.legacy.json",
+			"test:types:ts52": "node ../../node_modules/typescript52/lib/tsc.js --build tsconfig.legacy.json",
+			"test:types:ts53": "node ../../node_modules/typescript53/lib/tsc.js --build tsconfig.legacy.json",
+			"test:types:ts54": "node ../../node_modules/typescript54/lib/tsc.js --build tsconfig.legacy.json",
+			"test:types:ts55": "node ../../node_modules/typescript55/lib/tsc.js --build tsconfig.legacy.json",
+			"test:types:ts56": "node ../../node_modules/typescript56/lib/tsc.js --build tsconfig.legacy.json",
+			"test:types:ts57": "node ../../node_modules/typescript57/lib/tsc.js --build tsconfig.legacy.json",
+			"test:types:tscurrent": "tsc --build",
+			"test:lib": "vitest",
+			"test:lib:dev": "pnpm run test:lib --watch",
+			"test:build": "publint --strict && attw --pack",
+			"build": "pnpm build:tsup && pnpm build:codemods",
+			"build:tsup": "tsup --tsconfig tsconfig.prod.json",
+			"build:codemods": "cpy ../query-codemods/* ./build/codemods"
 		}
 	},
 	{
 		"name": "tailwindcss",
 		"version": "4.1.18",
 		"description": "A utility-first CSS framework for rapidly building custom user interfaces.",
+		"license": "MIT",
+		"repository": {
+			"type": "git",
+			"url": "https://github.com/tailwindlabs/tailwindcss.git",
+			"directory": "packages/tailwindcss"
+		},
+		"bugs": "https://github.com/tailwindlabs/tailwindcss/issues",
+		"homepage": "https://tailwindcss.com",
+		"exports": {
+			".": {
+				"types": "./dist/lib.d.mts",
+				"style": "./index.css",
+				"require": "./dist/lib.js",
+				"import": "./dist/lib.mjs"
+			},
+			"./plugin": {
+				"require": "./dist/plugin.js",
+				"import": "./dist/plugin.mjs"
+			},
+			"./plugin.js": {
+				"require": "./dist/plugin.js",
+				"import": "./dist/plugin.mjs"
+			},
+			"./defaultTheme": {
+				"require": "./dist/default-theme.js",
+				"import": "./dist/default-theme.mjs"
+			},
+			"./defaultTheme.js": {
+				"require": "./dist/default-theme.js",
+				"import": "./dist/default-theme.mjs"
+			},
+			"./colors": {
+				"require": "./dist/colors.js",
+				"import": "./dist/colors.mjs"
+			},
+			"./colors.js": {
+				"require": "./dist/colors.js",
+				"import": "./dist/colors.mjs"
+			},
+			"./lib/util/flattenColorPalette": {
+				"require": "./dist/flatten-color-palette.js",
+				"import": "./dist/flatten-color-palette.mjs"
+			},
+			"./lib/util/flattenColorPalette.js": {
+				"require": "./dist/flatten-color-palette.js",
+				"import": "./dist/flatten-color-palette.mjs"
+			},
+			"./package.json": "./package.json",
+			"./index.css": "./index.css",
+			"./index": "./index.css",
+			"./preflight.css": "./preflight.css",
+			"./preflight": "./preflight.css",
+			"./theme.css": "./theme.css",
+			"./theme": "./theme.css",
+			"./utilities.css": "./utilities.css",
+			"./utilities": "./utilities.css"
+		},
+		"publishConfig": {
+			"provenance": true,
+			"access": "public"
+		},
+		"style": "index.css",
+		"files": ["dist", "index.css", "preflight.css", "theme.css", "utilities.css"],
 		"devDependencies": {
 			"@jridgewell/remapping": "^2.3.4",
 			"@types/node": "^20.19.0",
@@ -396,16 +892,105 @@
 			"magic-string": "^0.30.21",
 			"source-map-js": "^1.2.1",
 			"@tailwindcss/oxide": "^4.1.18"
+		},
+		"scripts": {
+			"lint": "tsc --noEmit",
+			"build": "tsup-node --env.NODE_ENV production",
+			"dev": "tsup-node --env.NODE_ENV development --watch",
+			"test:ui": "playwright test"
 		}
 	},
 	{
 		"name": "react-dom",
 		"version": "19.2.4",
+		"description": "React package for working with the DOM.",
+		"main": "index.js",
+		"repository": {
+			"type": "git",
+			"url": "https://github.com/facebook/react.git",
+			"directory": "packages/react-dom"
+		},
+		"keywords": ["react"],
+		"license": "MIT",
+		"bugs": {
+			"url": "https://github.com/facebook/react/issues"
+		},
+		"homepage": "https://react.dev/",
 		"dependencies": {
 			"scheduler": "^0.27.0"
 		},
 		"peerDependencies": {
 			"react": "^19.2.4"
+		},
+		"files": ["LICENSE", "README.md", "client.js", "client.react-server.js", "index.js", "profiling.js", "profiling.react-server.js", "react-dom.react-server.js", "server.browser.js", "server.bun.js", "server.edge.js", "server.js", "server.node.js", "server.react-server.js", "static.browser.js", "static.edge.js", "static.js", "static.node.js", "static.react-server.js", "test-utils.js", "cjs/"],
+		"exports": {
+			".": {
+				"react-server": "./react-dom.react-server.js",
+				"default": "./index.js"
+			},
+			"./client": {
+				"react-server": "./client.react-server.js",
+				"default": "./client.js"
+			},
+			"./server": {
+				"react-server": "./server.react-server.js",
+				"workerd": "./server.edge.js",
+				"bun": "./server.bun.js",
+				"deno": "./server.browser.js",
+				"worker": "./server.browser.js",
+				"node": "./server.node.js",
+				"edge-light": "./server.edge.js",
+				"browser": "./server.browser.js",
+				"default": "./server.node.js"
+			},
+			"./server.browser": {
+				"react-server": "./server.react-server.js",
+				"default": "./server.browser.js"
+			},
+			"./server.bun": {
+				"react-server": "./server.react-server.js",
+				"default": "./server.bun.js"
+			},
+			"./server.edge": {
+				"react-server": "./server.react-server.js",
+				"default": "./server.edge.js"
+			},
+			"./server.node": {
+				"react-server": "./server.react-server.js",
+				"default": "./server.node.js"
+			},
+			"./static": {
+				"react-server": "./static.react-server.js",
+				"workerd": "./static.edge.js",
+				"deno": "./static.browser.js",
+				"worker": "./static.browser.js",
+				"node": "./static.node.js",
+				"edge-light": "./static.edge.js",
+				"browser": "./static.browser.js",
+				"default": "./static.node.js"
+			},
+			"./static.browser": {
+				"react-server": "./static.react-server.js",
+				"default": "./static.browser.js"
+			},
+			"./static.edge": {
+				"react-server": "./static.react-server.js",
+				"default": "./static.edge.js"
+			},
+			"./static.node": {
+				"react-server": "./static.react-server.js",
+				"default": "./static.node.js"
+			},
+			"./profiling": {
+				"react-server": "./profiling.react-server.js",
+				"default": "./profiling.js"
+			},
+			"./test-utils": "./test-utils.js",
+			"./package.json": "./package.json"
+		},
+		"browser": {
+			"./server.js": "./server.browser.js",
+			"./static.js": "./static.browser.js"
 		}
 	}
 ]
