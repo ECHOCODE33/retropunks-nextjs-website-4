@@ -1,0 +1,691 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<style>
+			/* Prevent scrolling and set pixel-perfect rendering */
+			body {
+				overflow: hidden;
+				margin: 0;
+				cursor: pointer;
+			}
+			svg {
+				max-width: 100vw;
+				max-height: 100vh;
+				width: 100%;
+			}
+			/* Pixel-perfect image rendering for retro aesthetic */
+			image,
+			img {
+				image-rendering: -moz-crisp-edges;
+				image-rendering: -webkit-optimize-contrast;
+				image-rendering: crisp-edges;
+				image-rendering: pixelated;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="svg-content">
+			<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48">
+				<!-- Background layer (generated dynamically) -->
+				<g id="Background"></g>
+
+				<!-- Character layer (injected from NFT data) -->
+				<g id="GeneratedImage">${DEFAULT_IMAGE_PLACEHOLDER}</g>
+			</svg>
+		</div>
+
+		<script>
+			// Background type enumeration
+			const BG_TYPES = {
+				None: 0,
+				Image: 1,
+				Solid: 2,
+				S_Vertical: 3, // Smooth vertical gradient
+				P_Vertical: 4, // Pixelated vertical gradient
+				S_Horizontal: 5, // Smooth horizontal gradient
+				P_Horizontal: 6, // Pixelated horizontal gradient
+				S_Down: 7, // Smooth diagonal (top-left to bottom-right)
+				P_Down: 8, // Pixelated diagonal
+				S_Up: 9, // Smooth diagonal (bottom-left to top-right)
+				P_Up: 10, // Pixelated diagonal
+				Radial: 11, // Radial gradient
+			};
+
+			// Background definitions (19 total)
+			const BACKGROUNDS = [
+				{
+					name: "Black",
+					layerType: 2,
+					palette: ["#000000"],
+				},
+
+				{
+					name: "Grey 1",
+					layerType: 2,
+					palette: ["#1a1a1a"],
+				},
+
+				{
+					name: "Grey 2",
+					layerType: 2,
+					palette: ["#333333"],
+				},
+
+				{
+					name: "Grey 3",
+					layerType: 2,
+					palette: ["#4d4d4d"],
+				},
+
+				{
+					name: "Grey 4",
+					layerType: 2,
+					palette: ["#666666"],
+				},
+
+				{
+					name: "Grey 5",
+					layerType: 2,
+					palette: ["#808080"],
+				},
+
+				{
+					name: "Grey 6",
+					layerType: 2,
+					palette: ["#999999"],
+				},
+
+				{
+					name: "Grey 7",
+					layerType: 2,
+					palette: ["#b3b3b3"],
+				},
+
+				{
+					name: "Grey 8",
+					layerType: 2,
+					palette: ["#cccccc"],
+				},
+
+				{
+					name: "Grey 9",
+					layerType: 2,
+					palette: ["#e6e6e6"],
+				},
+
+				{
+					name: "White",
+					layerType: 2,
+					palette: ["#ffffff"],
+				},
+
+				{
+					name: "Greyscale_SV",
+					layerType: 3,
+					palette: ["#000000", "#ffffff"],
+				},
+
+				{
+					name: "Greyscale_PV",
+					layerType: 4,
+					palette: [
+						"#000000ff",
+						"#020202ff",
+						"#070707ff",
+						"#0f0f0fff",
+						"#161616ff",
+						"#1e1e1eff",
+						"#272727ff",
+						"#333333ff",
+						"#404040ff",
+						"#4e4e4eff",
+						"#5e5e5eff",
+						"#6e6e6eff",
+						"#808080ff",
+						"#919191ff",
+						"#a2a2a2ff",
+						"#b3b3b3ff",
+						"#c3c3c3ff",
+						"#d2d2d2ff",
+						"#dfdfdfff",
+						"#eaeaeaff",
+						"#f3f3f3ff",
+						"#fafafaff",
+						"#fefefeff",
+						"#ffffffff",
+					],
+				},
+
+				{
+					name: "Greyscale_SVI",
+					layerType: 3,
+					palette: ["#ffffff", "#000000"],
+				},
+
+				{
+					name: "Greyscale_PVI",
+					layerType: 4,
+					palette: [
+						"#ffffffff",
+						"#fefefeff",
+						"#fafafaff",
+						"#f3f3f3ff",
+						"#eaeaeaff",
+						"#dfdfdfff",
+						"#d2d2d2ff",
+						"#c3c3c3ff",
+						"#b3b3b3ff",
+						"#a2a2a2ff",
+						"#919191ff",
+						"#808080ff",
+						"#6e6e6eff",
+						"#5e5e5eff",
+						"#4e4e4eff",
+						"#404040ff",
+						"#333333ff",
+						"#272727ff",
+						"#1e1e1eff",
+						"#161616ff",
+						"#0f0f0fff",
+						"#070707ff",
+						"#020202ff",
+						"#000000ff",
+					],
+				},
+
+				{
+					name: "Greyscale_SH",
+					layerType: 5,
+					palette: ["#000000", "#ffffff"],
+				},
+
+				{
+					name: "Greyscale_PH",
+					layerType: 6,
+					palette: [
+						"#000000ff",
+						"#020202ff",
+						"#070707ff",
+						"#0f0f0fff",
+						"#161616ff",
+						"#1e1e1eff",
+						"#272727ff",
+						"#333333ff",
+						"#404040ff",
+						"#4e4e4eff",
+						"#5e5e5eff",
+						"#6e6e6eff",
+						"#808080ff",
+						"#919191ff",
+						"#a2a2a2ff",
+						"#b3b3b3ff",
+						"#c3c3c3ff",
+						"#d2d2d2ff",
+						"#dfdfdfff",
+						"#eaeaeaff",
+						"#f3f3f3ff",
+						"#fafafaff",
+						"#fefefeff",
+						"#ffffffff",
+					],
+				},
+
+				{
+					name: "Greyscale_SHI",
+					layerType: 5,
+					palette: ["#ffffff", "#000000"],
+				},
+
+				{
+					name: "Greyscale_PHI",
+					layerType: 6,
+					palette: [
+						"#ffffffff",
+						"#fefefeff",
+						"#fafafaff",
+						"#f3f3f3ff",
+						"#eaeaeaff",
+						"#dfdfdfff",
+						"#d2d2d2ff",
+						"#c3c3c3ff",
+						"#b3b3b3ff",
+						"#a2a2a2ff",
+						"#919191ff",
+						"#808080ff",
+						"#6e6e6eff",
+						"#5e5e5eff",
+						"#4e4e4eff",
+						"#404040ff",
+						"#333333ff",
+						"#272727ff",
+						"#1e1e1eff",
+						"#161616ff",
+						"#0f0f0fff",
+						"#070707ff",
+						"#020202ff",
+						"#000000ff",
+					],
+				},
+
+				{
+					name: "Greyscale_SD",
+					layerType: 7,
+					palette: ["#000000", "#ffffff"],
+				},
+
+				{
+					name: "Greyscale_PD",
+					layerType: 8,
+					palette: [
+						"#000000ff",
+						"#020202ff",
+						"#070707ff",
+						"#0f0f0fff",
+						"#161616ff",
+						"#1e1e1eff",
+						"#272727ff",
+						"#333333ff",
+						"#404040ff",
+						"#4e4e4eff",
+						"#5e5e5eff",
+						"#6e6e6eff",
+						"#808080ff",
+						"#919191ff",
+						"#a2a2a2ff",
+						"#b3b3b3ff",
+						"#c3c3c3ff",
+						"#d2d2d2ff",
+						"#dfdfdfff",
+						"#eaeaeaff",
+						"#f3f3f3ff",
+						"#fafafaff",
+						"#fefefeff",
+						"#ffffffff",
+					],
+				},
+
+				{
+					name: "Greyscale_SDI",
+					layerType: 7,
+					palette: ["#ffffff", "#000000"],
+				},
+
+				{
+					name: "Greyscale_PDI",
+					layerType: 8,
+					palette: [
+						"#ffffffff",
+						"#fefefeff",
+						"#fafafaff",
+						"#f3f3f3ff",
+						"#eaeaeaff",
+						"#dfdfdfff",
+						"#d2d2d2ff",
+						"#c3c3c3ff",
+						"#b3b3b3ff",
+						"#a2a2a2ff",
+						"#919191ff",
+						"#808080ff",
+						"#6e6e6eff",
+						"#5e5e5eff",
+						"#4e4e4eff",
+						"#404040ff",
+						"#333333ff",
+						"#272727ff",
+						"#1e1e1eff",
+						"#161616ff",
+						"#0f0f0fff",
+						"#070707ff",
+						"#020202ff",
+						"#000000ff",
+					],
+				},
+
+				{
+					name: "Greyscale_SU",
+					layerType: 9,
+					palette: ["#000000", "#ffffff"],
+				},
+
+				{
+					name: "Greyscale_PU",
+					layerType: 10,
+					palette: [
+						"#000000ff",
+						"#020202ff",
+						"#070707ff",
+						"#0f0f0fff",
+						"#161616ff",
+						"#1e1e1eff",
+						"#272727ff",
+						"#333333ff",
+						"#404040ff",
+						"#4e4e4eff",
+						"#5e5e5eff",
+						"#6e6e6eff",
+						"#808080ff",
+						"#919191ff",
+						"#a2a2a2ff",
+						"#b3b3b3ff",
+						"#c3c3c3ff",
+						"#d2d2d2ff",
+						"#dfdfdfff",
+						"#eaeaeaff",
+						"#f3f3f3ff",
+						"#fafafaff",
+						"#fefefeff",
+						"#ffffffff",
+					],
+				},
+
+				{
+					name: "Greyscale_SUI",
+					layerType: 9,
+					palette: ["#ffffff", "#000000"],
+				},
+
+				{
+					name: "Greyscale_PUI",
+					layerType: 10,
+					palette: [
+						"#ffffffff",
+						"#fefefeff",
+						"#fafafaff",
+						"#f3f3f3ff",
+						"#eaeaeaff",
+						"#dfdfdfff",
+						"#d2d2d2ff",
+						"#c3c3c3ff",
+						"#b3b3b3ff",
+						"#a2a2a2ff",
+						"#919191ff",
+						"#808080ff",
+						"#6e6e6eff",
+						"#5e5e5eff",
+						"#4e4e4eff",
+						"#404040ff",
+						"#333333ff",
+						"#272727ff",
+						"#1e1e1eff",
+						"#161616ff",
+						"#0f0f0fff",
+						"#070707ff",
+						"#020202ff",
+						"#000000ff",
+					],
+				},
+
+				{
+					name: "Greyscale_Radial_1",
+					layerType: 11,
+					palette: ["#ffffff", "#000000"],
+				},
+				
+				{
+					name: "Greyscale_Radial_2",
+					layerType: 11,
+					palette: ["#000000", "#ffffff"],
+				},
+			];
+
+			// DOM references
+			const backgroundElement = document.getElementById("Background");
+			let currentIndex = 0;
+			let bgRect = null;
+			let bgImage = null;
+
+			/**
+			 * Normalizes color format to 8-character hex (#RRGGBBAA)
+			 */
+			function normalizeColor(col) {
+				if (!col) return "#000000ff";
+				let s = String(col).trim();
+				if (!s.startsWith("#")) s = "#" + s;
+
+				// Expand shorthand (#RGB -> #RRGGBB)
+				if (s.length === 4) {
+					s = "#" + s[1] + s[1] + s[2] + s[2] + s[3] + s[3];
+				}
+
+				// Add alpha channel if missing
+				return s.length === 7 ? s + "ff" : s.toLowerCase();
+			}
+
+			/**
+			 * Gets gradient coordinates based on gradient type
+			 */
+			function getCoords(type) {
+				if ([3, 4].includes(type)) {
+					return { x1: "0", y1: "0", x2: "0", y2: "1" }; // Vertical
+				}
+				if ([5, 6].includes(type)) {
+					return { x1: "0", y1: "0", x2: "1", y2: "0" }; // Horizontal
+				}
+				if ([7, 8].includes(type)) {
+					return { x1: "0", y1: "0", x2: "1", y2: "1" }; // Diagonal down
+				}
+				if ([9, 10].includes(type)) {
+					return { x1: "0", y1: "1", x2: "1", y2: "0" }; // Diagonal up
+				}
+				return { x1: "0", y1: "0", x2: "0", y2: "1" }; // Default vertical
+			}
+
+			/**
+			 * Creates SVG element with attributes
+			 */
+			function createSvgElement(tag, attrs) {
+				const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+				for (const k in attrs || {}) {
+					el.setAttribute(k, attrs[k]);
+				}
+				return el;
+			}
+
+			/**
+			 * Initializes the background system with all gradient definitions
+			 */
+			function initBackgroundSystem() {
+				backgroundElement.innerHTML = "";
+				const defs = createSvgElement("defs", {});
+
+				// Create gradient definitions for each background
+				BACKGROUNDS.forEach(function (bg, idx) {
+					if (bg.layerType < 3) return; // Skip non-gradient types
+
+					bg._id = "grad-" + idx;
+					const palette = (bg.palette || []).map(normalizeColor);
+					const n = palette.length;
+
+					// Create gradient element (linear or radial)
+					const grad =
+						bg.layerType === BG_TYPES.Radial
+							? createSvgElement("radialGradient", {
+									id: bg._id,
+									cx: "50%",
+									cy: "50%",
+									r: "70%",
+								})
+							: createSvgElement("linearGradient", Object.assign({ id: bg._id }, getCoords(bg.layerType)));
+
+					// Pixelated gradients use hard stops between colors
+					const isPixel = [4, 6, 8, 10].includes(bg.layerType);
+
+					palette.forEach(function (color, i) {
+						if (isPixel) {
+							// Hard stop at start of color band
+							grad.appendChild(
+								createSvgElement("stop", {
+									offset: (i / n) * 100 + "%",
+									"stop-color": color,
+								}),
+							);
+							// Hard stop at end of color band
+							grad.appendChild(
+								createSvgElement("stop", {
+									offset: ((i + 1) / n) * 100 - 0.01 + "%",
+									"stop-color": color,
+								}),
+							);
+						} else {
+							// Smooth gradient
+							grad.appendChild(
+								createSvgElement("stop", {
+									offset: (i / (n - 1 || 1)) * 100 + "%",
+									"stop-color": color,
+								}),
+							);
+						}
+					});
+
+					defs.appendChild(grad);
+				});
+
+				backgroundElement.appendChild(defs);
+
+				// Create rect and image elements for displaying backgrounds
+				bgRect = createSvgElement("rect", {
+					width: 48,
+					height: 48,
+					fill: "transparent",
+				});
+				bgImage = createSvgElement("image", {
+					width: 48,
+					height: 48,
+					preserveAspectRatio: "none",
+					style: "display:none",
+				});
+
+				backgroundElement.appendChild(bgRect);
+				backgroundElement.appendChild(bgImage);
+
+				updateVisuals();
+			}
+
+			/**
+			 * Updates the visual display based on current background index
+			 */
+			function updateVisuals() {
+				const bg = BACKGROUNDS[currentIndex];
+				if (!bg) return;
+
+				// Image backgrounds (currently unused but supported)
+				if (bg.layerType === BG_TYPES.Image && bg.imageURL) {
+					let url = bg.imageURL.trim();
+					if (!url.startsWith("data:image") && !url.startsWith("http")) {
+						url = "data:image/png;base64," + url;
+					}
+					bgRect.style.display = "none";
+					bgImage.style.display = "block";
+					bgImage.setAttribute("href", url);
+					bgImage.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", url);
+				} else {
+					// Gradient or solid backgrounds
+					bgImage.style.display = "none";
+					bgRect.style.display = "block";
+					const fill = bg._id ? "url(#" + bg._id + ")" : bg.palette[0] || "transparent";
+					bgRect.setAttribute("fill", fill);
+				}
+			}
+
+			/**
+			 * Cycles to the next background
+			 */
+			function cycleNextBackground() {
+				currentIndex = (currentIndex + 1) % BACKGROUNDS.length;
+				requestAnimationFrame(updateVisuals);
+			}
+
+			/**
+			 * Cycles to the previous background
+			 */
+			function cyclePrevBackground() {
+				currentIndex = (currentIndex - 1 + BACKGROUNDS.length) % BACKGROUNDS.length;
+				requestAnimationFrame(updateVisuals);
+			}
+
+			var CARD_ID = 4;
+
+			// Listen for messages from parent window
+			window.addEventListener("message", function (e) {
+				var d = e.data;
+				if (!d || typeof d !== "object") return;
+
+				// Handle background cycling commands
+				if (d.type === "cycleNext") {
+					cycleNextBackground();
+				}
+				if (d.type === "cyclePrev") {
+					cyclePrevBackground();
+				}
+
+				// Handle direct background index setting
+				if (d.type === "setBackground" && typeof d.index === "number") {
+					currentIndex = Math.max(0, Math.min(d.index, BACKGROUNDS.length - 1));
+					requestAnimationFrame(updateVisuals);
+					notifyParent();
+				}
+
+				// Handle SVG extraction request
+				if (d.type === "getSvg") {
+					var svg = document.querySelector("#svg-content svg");
+					var str = svg ? new XMLSerializer().serializeToString(svg) : "";
+					try {
+						e.source.postMessage(
+							{
+								type: "svgResult",
+								requestId: d.requestId,
+								svg: str,
+							},
+							"*",
+						);
+					} catch (_) {}
+				}
+			});
+
+			// Notify parent of background changes
+			function notifyParent() {
+				try {
+					if (window.parent && window.parent !== window) {
+						window.parent.postMessage(
+							{
+								type: "backgroundChange",
+								cardId: CARD_ID,
+								index: currentIndex,
+							},
+							"*",
+						);
+					}
+				} catch (_) {}
+			}
+
+			// Wrap existing functions to notify parent
+			var _cycleNext = cycleNextBackground;
+			cycleNextBackground = function () {
+				_cycleNext();
+				notifyParent();
+			};
+
+			var _cyclePrev = cyclePrevBackground;
+			cyclePrevBackground = function () {
+				_cyclePrev();
+				notifyParent();
+			};
+
+			// Keyboard navigation
+			document.addEventListener("keydown", function (e) {
+				if ([" ", "Enter", "ArrowRight"].indexOf(e.key) !== -1) {
+					cycleNextBackground();
+				}
+				if (e.key === "ArrowLeft") {
+					cyclePrevBackground();
+				}
+			});
+
+			// Click to cycle
+			document.addEventListener("click", cycleNextBackground);
+			// Initialize on load (will be replaced by postMessage script injection)
+			initBackgroundSystem();
+		</script>
+	</body>
+</html>

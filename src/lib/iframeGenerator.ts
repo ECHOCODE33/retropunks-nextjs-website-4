@@ -1,32 +1,8 @@
-// ============================================================================
-// IFRAME GENERATOR FOR RETROPUNKS NFT DISPLAY
-// ============================================================================
-//
-// This module generates self-contained HTML iframes for displaying RetroPunks
-// NFTs with interactive background cycling capabilities.
-//
-// The iframe:
-// - Displays the NFT character as SVG
-// - Allows cycling through 19 different backgrounds
-// - Communicates with parent via postMessage
-// - Is fully sandboxed for security
-//
-// ============================================================================
-
-// ============================================================================
-// CONSTANTS
-// ============================================================================
-
-/** Number of available backgrounds for standard (non-Special) NFTs */
-export const IFRAME_BACKGROUND_COUNT = 19;
+export const IFRAME_BACKGROUND_COUNT = 30;
 
 /** Default placeholder image shown when NFT content fails to load */
 const DEFAULT_IMAGE_PLACEHOLDER =
 	'<image href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAB5UlEQVR4AeyXMVLEMAxFBcfgGKSg3YqOO3CUPcp2HICOaiu6HACogZKCA4B/Es06GUxsfTmBmezkj2xHsvTknWT3XP75ZwNY+wC3E9hOgOzA9hUiG0iHbydAt5DcwOMEvkINFoUw/vIA4KsgdmAAuq43FyIWhZq7+GCpiwGgEnsFWwC6zmnXtZCmaQTS+ZyN4rv95vxT9y0Aqb1WWacB0HWobVuBlqagAZYueJqPBkDXoZvrnZRoWoh1TgNYE3vF0QDa9dKCrHHTPAUA09C/MXcDeHp+kVgpvNgH45Rf7robQG5Cb78SgO6NGb1BR7XcPb4KtLu6FGh0M5rAB4IPFN0yDUsATAlqB7kB7G93Ar1/fAokiQ98IPhACbfsZTeA7IzOjsUA7ZsI5FyHebtiAHOmSoElAGehBiiY03X/cBTotNKP9oejQP1MunE813XWlgCwuarEuwHgFCCtcj88lVJz+EJ632rdAKwFsHFuAKW/Lkv9U6BuAKkEtddpALwTIC0UT5ocqT9raQC2ADbeHUCfPnOWLVzj3QF046UsDaD/D/R7n1t45I+3O5QbOvKjAUa7rTBxAxidxKH/HaRd/skGVnQdCkP75QZgL4GLrAmA7v4mrvIhuibAkKKu2QDq9nd+928AAAD//0m3XPsAAAAGSURBVAMAs7DEJZhpsgcAAAAASUVORK5CYII=" width="48" height="48" x="0" y="0" />';
-
-// ============================================================================
-// POST MESSAGE SCRIPT GENERATION
-// ============================================================================
 
 /**
  * Generates the postMessage communication script for the iframe
@@ -123,10 +99,6 @@ function getPostMessageScript(cardId: string): string {
   `;
 }
 
-// ============================================================================
-// IFRAME SRCDOC BUILDER
-// ============================================================================
-
 /**
  * Builds the complete HTML document for the iframe srcdoc attribute
  *
@@ -158,10 +130,6 @@ export function buildIframeSrcdoc(innerCharacterContent: string, initialBgIndex:
 
 	return html;
 }
-
-// ============================================================================
-// IFRAME HTML TEMPLATE
-// ============================================================================
 
 /**
  * Returns the complete HTML template for the iframe
@@ -232,26 +200,380 @@ function getIframeTemplate(): string {
 
       // Background definitions (19 total)
       const BACKGROUNDS = [
-        { name: "Default", layerType: 2, palette: ["#e8eded"] },
-        { name: "Solid Black", layerType: 2, palette: ["#000000"] },
-        { name: "Smooth Vertical", layerType: 3, palette: ["#000000", "#ffffff"] },
-        { name: "Pixelated Vertical", layerType: 4, palette: ["#000000ff", "#020202ff", "#070707ff", "#0f0f0fff", "#161616ff", "#1e1e1eff", "#272727ff", "#333333ff", "#404040ff", "#4e4e4eff", "#5e5e5eff", "#6e6e6eff", "#808080ff", "#919191ff", "#a2a2a2ff", "#b3b3b3ff", "#c3c3c3ff", "#d2d2d2ff", "#dfdfdfff", "#eaeaeaff", "#f3f3f3ff", "#fafafaff", "#fefefeff", "#ffffffff"] },
-        { name: "Smooth Vertical Inverse", layerType: 3, palette: ["#ffffff", "#000000"] },
-        { name: "Pixelated Vertical Inverse", layerType: 4, palette: ["#ffffffff", "#fefefeff", "#fafafaff", "#f3f3f3ff", "#eaeaeaff", "#dfdfdfff", "#d2d2d2ff", "#c3c3c3ff", "#b3b3b3ff", "#a2a2a2ff", "#919191ff", "#808080ff", "#6e6e6eff", "#5e5e5eff", "#4e4e4eff", "#404040ff", "#333333ff", "#272727ff", "#1e1e1eff", "#161616ff", "#0f0f0fff", "#070707ff", "#020202ff", "#000000ff"] },
-        { name: "Smooth Horizontal", layerType: 5, palette: ["#000000", "#ffffff"] },
-        { name: "Pixelated Horizontal", layerType: 6, palette: ["#000000ff", "#020202ff", "#070707ff", "#0f0f0fff", "#161616ff", "#1e1e1eff", "#272727ff", "#333333ff", "#404040ff", "#4e4e4eff", "#5e5e5eff", "#6e6e6eff", "#808080ff", "#919191ff", "#a2a2a2ff", "#b3b3b3ff", "#c3c3c3ff", "#d2d2d2ff", "#dfdfdfff", "#eaeaeaff", "#f3f3f3ff", "#fafafaff", "#fefefeff", "#ffffffff"] },
-        { name: "Smooth Horizontal Inverse", layerType: 5, palette: ["#ffffff", "#000000"] },
-        { name: "Pixelated Horizontal Inverse", layerType: 6, palette: ["#ffffffff", "#fefefeff", "#fafafaff", "#f3f3f3ff", "#eaeaeaff", "#dfdfdfff", "#d2d2d2ff", "#c3c3c3ff", "#b3b3b3ff", "#a2a2a2ff", "#919191ff", "#808080ff", "#6e6e6eff", "#5e5e5eff", "#4e4e4eff", "#404040ff", "#333333ff", "#272727ff", "#1e1e1eff", "#161616ff", "#0f0f0fff", "#070707ff", "#020202ff", "#000000ff"] },
-        { name: "Smooth Diagonal", layerType: 7, palette: ["#000000", "#ffffff"] },
-        { name: "Pixel Diagonal", layerType: 8, palette: ["#000000ff", "#020202ff", "#070707ff", "#0f0f0fff", "#161616ff", "#1e1e1eff", "#272727ff", "#333333ff", "#404040ff", "#4e4e4eff", "#5e5e5eff", "#6e6e6eff", "#808080ff", "#919191ff", "#a2a2a2ff", "#b3b3b3ff", "#c3c3c3ff", "#d2d2d2ff", "#dfdfdfff", "#eaeaeaff", "#f3f3f3ff", "#fafafaff", "#fefefeff", "#ffffffff"] },
-        { name: "Smooth Diagonal Inverse", layerType: 7, palette: ["#ffffff", "#000000"] },
-        { name: "Pixel Diagonal Inverse", layerType: 8, palette: ["#ffffffff", "#fefefeff", "#fafafaff", "#f3f3f3ff", "#eaeaeaff", "#dfdfdfff", "#d2d2d2ff", "#c3c3c3ff", "#b3b3b3ff", "#a2a2a2ff", "#919191ff", "#808080ff", "#6e6e6eff", "#5e5e5eff", "#4e4e4eff", "#404040ff", "#333333ff", "#272727ff", "#1e1e1eff", "#161616ff", "#0f0f0fff", "#070707ff", "#020202ff", "#000000ff"] },
-        { name: "Smooth Reverse Diagonal", layerType: 9, palette: ["#000000", "#ffffff"] },
-        { name: "Pixel Reverse Diagonal", layerType: 10, palette: ["#000000ff", "#020202ff", "#070707ff", "#0f0f0fff", "#161616ff", "#1e1e1eff", "#272727ff", "#333333ff", "#404040ff", "#4e4e4eff", "#5e5e5eff", "#6e6e6eff", "#808080ff", "#919191ff", "#a2a2a2ff", "#b3b3b3ff", "#c3c3c3ff", "#d2d2d2ff", "#dfdfdfff", "#eaeaeaff", "#f3f3f3ff", "#fafafaff", "#fefefeff", "#ffffffff"] },
-        { name: "Smooth Reverse Diagonal Inverse", layerType: 9, palette: ["#ffffff", "#000000"] },
-        { name: "Pixel Reverse Diagonal Inverse", layerType: 10, palette: ["#ffffffff", "#fefefeff", "#fafafaff", "#f3f3f3ff", "#eaeaeaff", "#dfdfdfff", "#d2d2d2ff", "#c3c3c3ff", "#b3b3b3ff", "#a2a2a2ff", "#919191ff", "#808080ff", "#6e6e6eff", "#5e5e5eff", "#4e4e4eff", "#404040ff", "#333333ff", "#272727ff", "#1e1e1eff", "#161616ff", "#0f0f0fff", "#070707ff", "#020202ff", "#000000ff"] },
-        { name: "Radial", layerType: 11, palette: ["#ffffff", "#000000"] }
-      ];
+        {
+					name: "White",
+					layerType: 2,
+					palette: ["#ffffff"],
+				},
+
+				{
+					name: "Black",
+					layerType: 2,
+					palette: ["#000000"],
+				},
+
+				{
+					name: "Grey 1",
+					layerType: 2,
+					palette: ["#1a1a1a"],
+				},
+
+				{
+					name: "Grey 2",
+					layerType: 2,
+					palette: ["#333333"],
+				},
+
+				{
+					name: "Grey 3",
+					layerType: 2,
+					palette: ["#4d4d4d"],
+				},
+
+				{
+					name: "Grey 4",
+					layerType: 2,
+					palette: ["#666666"],
+				},
+
+				{
+					name: "Grey 5",
+					layerType: 2,
+					palette: ["#808080"],
+				},
+
+				{
+					name: "Grey 6",
+					layerType: 2,
+					palette: ["#999999"],
+				},
+
+				{
+					name: "Grey 7",
+					layerType: 2,
+					palette: ["#b3b3b3"],
+				},
+
+				{
+					name: "Grey 8",
+					layerType: 2,
+					palette: ["#cccccc"],
+				},
+
+				{
+					name: "Grey 9",
+					layerType: 2,
+					palette: ["#e6e6e6"],
+				},
+
+				{
+					name: "Greyscale_SV",
+					layerType: 3,
+					palette: ["#000000", "#ffffff"],
+				},
+
+				{
+					name: "Greyscale_PV",
+					layerType: 4,
+					palette: [
+						"#000000ff",
+						"#020202ff",
+						"#070707ff",
+						"#0f0f0fff",
+						"#161616ff",
+						"#1e1e1eff",
+						"#272727ff",
+						"#333333ff",
+						"#404040ff",
+						"#4e4e4eff",
+						"#5e5e5eff",
+						"#6e6e6eff",
+						"#808080ff",
+						"#919191ff",
+						"#a2a2a2ff",
+						"#b3b3b3ff",
+						"#c3c3c3ff",
+						"#d2d2d2ff",
+						"#dfdfdfff",
+						"#eaeaeaff",
+						"#f3f3f3ff",
+						"#fafafaff",
+						"#fefefeff",
+						"#ffffffff",
+					],
+				},
+
+				{
+					name: "Greyscale_SVI",
+					layerType: 3,
+					palette: ["#ffffff", "#000000"],
+				},
+
+				{
+					name: "Greyscale_PVI",
+					layerType: 4,
+					palette: [
+						"#ffffffff",
+						"#fefefeff",
+						"#fafafaff",
+						"#f3f3f3ff",
+						"#eaeaeaff",
+						"#dfdfdfff",
+						"#d2d2d2ff",
+						"#c3c3c3ff",
+						"#b3b3b3ff",
+						"#a2a2a2ff",
+						"#919191ff",
+						"#808080ff",
+						"#6e6e6eff",
+						"#5e5e5eff",
+						"#4e4e4eff",
+						"#404040ff",
+						"#333333ff",
+						"#272727ff",
+						"#1e1e1eff",
+						"#161616ff",
+						"#0f0f0fff",
+						"#070707ff",
+						"#020202ff",
+						"#000000ff",
+					],
+				},
+
+				{
+					name: "Greyscale_SH",
+					layerType: 5,
+					palette: ["#000000", "#ffffff"],
+				},
+
+				{
+					name: "Greyscale_PH",
+					layerType: 6,
+					palette: [
+						"#000000ff",
+						"#020202ff",
+						"#070707ff",
+						"#0f0f0fff",
+						"#161616ff",
+						"#1e1e1eff",
+						"#272727ff",
+						"#333333ff",
+						"#404040ff",
+						"#4e4e4eff",
+						"#5e5e5eff",
+						"#6e6e6eff",
+						"#808080ff",
+						"#919191ff",
+						"#a2a2a2ff",
+						"#b3b3b3ff",
+						"#c3c3c3ff",
+						"#d2d2d2ff",
+						"#dfdfdfff",
+						"#eaeaeaff",
+						"#f3f3f3ff",
+						"#fafafaff",
+						"#fefefeff",
+						"#ffffffff",
+					],
+				},
+
+				{
+					name: "Greyscale_SHI",
+					layerType: 5,
+					palette: ["#ffffff", "#000000"],
+				},
+
+				{
+					name: "Greyscale_PHI",
+					layerType: 6,
+					palette: [
+						"#ffffffff",
+						"#fefefeff",
+						"#fafafaff",
+						"#f3f3f3ff",
+						"#eaeaeaff",
+						"#dfdfdfff",
+						"#d2d2d2ff",
+						"#c3c3c3ff",
+						"#b3b3b3ff",
+						"#a2a2a2ff",
+						"#919191ff",
+						"#808080ff",
+						"#6e6e6eff",
+						"#5e5e5eff",
+						"#4e4e4eff",
+						"#404040ff",
+						"#333333ff",
+						"#272727ff",
+						"#1e1e1eff",
+						"#161616ff",
+						"#0f0f0fff",
+						"#070707ff",
+						"#020202ff",
+						"#000000ff",
+					],
+				},
+
+				{
+					name: "Greyscale_SD",
+					layerType: 7,
+					palette: ["#000000", "#ffffff"],
+				},
+
+				{
+					name: "Greyscale_PD",
+					layerType: 8,
+					palette: [
+						"#000000ff",
+						"#020202ff",
+						"#070707ff",
+						"#0f0f0fff",
+						"#161616ff",
+						"#1e1e1eff",
+						"#272727ff",
+						"#333333ff",
+						"#404040ff",
+						"#4e4e4eff",
+						"#5e5e5eff",
+						"#6e6e6eff",
+						"#808080ff",
+						"#919191ff",
+						"#a2a2a2ff",
+						"#b3b3b3ff",
+						"#c3c3c3ff",
+						"#d2d2d2ff",
+						"#dfdfdfff",
+						"#eaeaeaff",
+						"#f3f3f3ff",
+						"#fafafaff",
+						"#fefefeff",
+						"#ffffffff",
+					],
+				},
+
+				{
+					name: "Greyscale_SDI",
+					layerType: 7,
+					palette: ["#ffffff", "#000000"],
+				},
+
+				{
+					name: "Greyscale_PDI",
+					layerType: 8,
+					palette: [
+						"#ffffffff",
+						"#fefefeff",
+						"#fafafaff",
+						"#f3f3f3ff",
+						"#eaeaeaff",
+						"#dfdfdfff",
+						"#d2d2d2ff",
+						"#c3c3c3ff",
+						"#b3b3b3ff",
+						"#a2a2a2ff",
+						"#919191ff",
+						"#808080ff",
+						"#6e6e6eff",
+						"#5e5e5eff",
+						"#4e4e4eff",
+						"#404040ff",
+						"#333333ff",
+						"#272727ff",
+						"#1e1e1eff",
+						"#161616ff",
+						"#0f0f0fff",
+						"#070707ff",
+						"#020202ff",
+						"#000000ff",
+					],
+				},
+
+				{
+					name: "Greyscale_SU",
+					layerType: 9,
+					palette: ["#000000", "#ffffff"],
+				},
+
+				{
+					name: "Greyscale_PU",
+					layerType: 10,
+					palette: [
+						"#000000ff",
+						"#020202ff",
+						"#070707ff",
+						"#0f0f0fff",
+						"#161616ff",
+						"#1e1e1eff",
+						"#272727ff",
+						"#333333ff",
+						"#404040ff",
+						"#4e4e4eff",
+						"#5e5e5eff",
+						"#6e6e6eff",
+						"#808080ff",
+						"#919191ff",
+						"#a2a2a2ff",
+						"#b3b3b3ff",
+						"#c3c3c3ff",
+						"#d2d2d2ff",
+						"#dfdfdfff",
+						"#eaeaeaff",
+						"#f3f3f3ff",
+						"#fafafaff",
+						"#fefefeff",
+						"#ffffffff",
+					],
+				},
+
+				{
+					name: "Greyscale_SUI",
+					layerType: 9,
+					palette: ["#ffffff", "#000000"],
+				},
+
+				{
+					name: "Greyscale_PUI",
+					layerType: 10,
+					palette: [
+						"#ffffffff",
+						"#fefefeff",
+						"#fafafaff",
+						"#f3f3f3ff",
+						"#eaeaeaff",
+						"#dfdfdfff",
+						"#d2d2d2ff",
+						"#c3c3c3ff",
+						"#b3b3b3ff",
+						"#a2a2a2ff",
+						"#919191ff",
+						"#808080ff",
+						"#6e6e6eff",
+						"#5e5e5eff",
+						"#4e4e4eff",
+						"#404040ff",
+						"#333333ff",
+						"#272727ff",
+						"#1e1e1eff",
+						"#161616ff",
+						"#0f0f0fff",
+						"#070707ff",
+						"#020202ff",
+						"#000000ff",
+					],
+				},
+
+				{
+					name: "Greyscale_Radial_1",
+					layerType: 11,
+					palette: ["#ffffff", "#000000"],
+				},
+				
+				{
+					name: "Greyscale_Radial_2",
+					layerType: 11,
+					palette: ["#000000", "#ffffff"],
+				},
+			];
 
       // DOM references
       const backgroundElement = document.getElementById("Background");

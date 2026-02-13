@@ -675,9 +675,9 @@ export default function PunkCard({ tokenId, tokenUri, currentBg, name, bio, onMe
 										value={resolution}
 										onChange={(e) => setResolution(Number(e.target.value))}
 										className="w-full bg-retro-muted border border-retro-orange/50 px-3 sm:px-4 py-2 text-white focus:border-retro-orange outline-none rounded-sm min-w-0">
-										<option value={480}>480 × 480 (10×)</option>
-										<option value={960}>960 × 960 (20×)</option>
-										<option value={1920}>1920 × 1920 (40×)</option>
+										<option value={480}>480x480</option>
+										<option value={960}>960x960</option>
+										<option value={1920}>1920x1920</option>
 									</select>
 								</div>
 

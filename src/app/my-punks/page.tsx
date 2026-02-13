@@ -4,10 +4,11 @@ import { useState, useEffect, useCallback } from "react";
 import { useAccount, useChainId } from "wagmi";
 import { RETROPUNKS_CONTRACT } from "@/lib/contracts";
 import { bytes32ToString } from "@/lib/utilities";
+import { base, baseSepolia } from "wagmi/chains";
 import PunkCard from "@/components/PunkCard";
 
 // Constants
-const BASE_MAINNET_CHAIN_ID = 8453;
+const CHAIN_ID = baseSepolia.id;
 
 // Types
 interface TokenData {
@@ -120,7 +121,7 @@ export default function MyPunksPage() {
 			return;
 		}
 
-		if (chainId !== BASE_MAINNET_CHAIN_ID) {
+		if (chainId !== CHAIN_ID) {
 			setTokens([]);
 			setLoading(false);
 			return;
@@ -224,7 +225,7 @@ export default function MyPunksPage() {
 	}
 
 	// Wrong network state
-	if (chainId !== BASE_MAINNET_CHAIN_ID) {
+	if (chainId !== CHAIN_ID) {
 		return (
 			<div className="w-full min-h-[60vh] flex flex-col items-center justify-center px-4">
 				<div className="text-center max-w-md">

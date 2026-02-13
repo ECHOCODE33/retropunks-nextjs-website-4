@@ -16,13 +16,19 @@ declare const XMLSerializer: {
 // CONSTANTS
 // ============================================================================
 
-/** Maximum bytes allowed for NFT name (bytes32 in Solidity = 32 bytes) */
+/**
+ * Maximum bytes allowed for NFT name (bytes32 in Solidity = 32 bytes)
+ */
 const RETROPUNKS_NAME_MAX_BYTES = 32;
 
-/** Maximum character length allowed for NFT bio */
+/**
+ * Maximum character length allowed for NFT bio
+ */
 export const RETROPUNKS_BIO_MAX_LENGTH = 160;
 
-/** Allowed characters in NFT names (matches smart contract validation) */
+/**
+ * Allowed characters in NFT names (matches smart contract validation)
+ */
 const RETROPUNKS_NAME_ALLOWED = /^[\dA-Za-z\x20!\-._']*$/;
 
 // ============================================================================
